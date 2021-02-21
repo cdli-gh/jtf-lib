@@ -1,0 +1,134 @@
+[
+ {
+   "Language or dialect": "Akkadian",
+   "Protocol Code": "(none: must specify dialect too)",
+   "Inline Code(s)": ["a", "akk"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Early Akkadian",
+   "Protocol Code": "akk-x-earakk",
+   "Inline Code(s)": ["eakk"],
+   "Notes": "For pre-Sargonic Akkadian."
+ },
+ {
+   "Language or dialect": "Old Akkadian",
+   "Protocol Code": "akk-x-oldakk",
+   "Inline Code(s)": ["oakk"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Ur III Akkadian",
+   "Protocol Code": "ua",
+   "Inline Code(s)": ["ur3akk"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Old Assyrian",
+   "Protocol Code": "akk-x-oldass",
+   "Inline Code(s)": ["oa"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Old Babylonian",
+   "Protocol Code": "akk-x-oldbab",
+   "Inline Code(s)": ["ob"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Old Babylonian peripheral",
+   "Protocol Code": "akk-x-obperi",
+   "Inline Code(s)": "",
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Middle Assyrian",
+   "Protocol Code": "akk-x-midass",
+   "Inline Code(s)": ["ma"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Middle Babylonian",
+   "Protocol Code": "akk-x-midbab",
+   "Inline Code(s)": ["mb"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Middle Babylonian peripheral",
+   "Protocol Code": "akk-x-mbperi",
+   "Inline Code(s)": "",
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Neo-Assyrian",
+   "Protocol Code": "akk-x-neoass",
+   "Inline Code(s)": ["na"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Neo-Babylonian",
+   "Protocol Code": "akk-x-neobab",
+   "Inline Code(s)": ["nb"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Late Babylonian",
+   "Protocol Code": "akk-x-ltebab",
+   "Inline Code(s)": ["nb"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Standard Babylonian",
+   "Protocol Code": "akk-x-stdbab",
+   "Inline Code(s)": ["sb"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Conventional Akkadian",
+   "Protocol Code": "akk-x-conakk",
+   "Inline Code(s)": ["ca"],
+   "Notes": "The artificial form of Akkadian used in lemmatisation Citation Forms."
+ },
+ {
+   "Language or dialect": "normalised",
+   "Protocol Code": "(none: main text must be transliteration)",
+   "Inline Code(s)": ["n"],
+   "Notes": "Used in lexical lists and restorations; try to avoid wherever possible."
+ },
+ {
+   "Language or dialect": "transliterated (graphemic) Akkadian",
+   "Protocol Code": "(none: must specify dialect too)",
+   "Inline Code(s)": ["g"],
+   "Notes": "Only for use when switching from normalised Akkadian."
+ },
+ {
+   "Language or dialect": "Hittite",
+   "Protocol Code": "hit",
+   "Inline Code(s)": ["h", "hit"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Sumerian",
+   "Protocol Code": "sux or sux-x-emegir",
+   "Inline Code(s)": ["s", "sux", "eg"],
+   "Notes": "The abbreviation eg stands for Emegir (main-dialect Sumerian)."
+ },
+ {
+   "Language or dialect": "Emesal",
+   "Protocol Code": "sux-x-emesal",
+   "Inline Code(s)": ["e," "es"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Syllabic",
+   "Protocol Code": "sux-x-syllabic",
+   "Inline Code(s)": ["sy"],
+   "Notes": ""
+ },
+ {
+   "Language or dialect": "Udgalnun",
+   "Protocol Code": "sux-x-udgalnun",
+   "Inline Code(s)": ["u"],
+   "Notes": ""
+ }
+]

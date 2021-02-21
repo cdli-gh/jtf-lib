@@ -1,0 +1,371 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/abstract",
+  "title": "JSON Transliteration Format",
+  "version": "0.1.0",
+  "properties": {
+    "children": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/object"
+      }
+    }
+  },
+  "definitions": {
+    "TLTChar": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^TLTChar$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "index": {
+          "type": "number"
+        },
+        "separator": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "emendation": {
+          "type": "string"
+        },
+        "gloss": {
+          "type": "string"
+        },
+        "exclamation": {
+          "type": "boolean"
+        },
+        "question": {
+          "type": "boolean"
+        },
+        "damage": {
+          "type": "boolean"
+        },
+        "collation": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        },
+        "graphics": {
+          "type": "object"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "inputValue": {
+          "type": "string"
+        },
+        "order": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_class",
+        "type",
+        "value"
+      ],
+      "description": "Transliteration character",
+      "$id": "TLTChar"
+    },
+    "inline": {
+      "$id": "inline",
+      "description": "Inline elements.",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/sequence"
+        },
+        {
+          "$ref": "#/definitions/field"
+        },
+        {
+          "$ref": "#/definitions/comment"
+        }
+      ]
+    },
+    "sequence": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Sequence$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TLTChar"
+          }
+        }
+      },
+      "required": [
+        "_class",
+        "type",
+        "name",
+        "children"
+      ],
+      "description": "Sequence of transliteration characters.",
+      "$id": "Sequence"
+    },
+    "field": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Field$"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_class",
+        "type"
+      ],
+      "description": "Inline field.",
+      "$id": "Field"
+    },
+    "comment": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Comment$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_class",
+        "type",
+        "value"
+      ],
+      "description": "Commentary.",
+      "$id": "Comment"
+    },
+    "line": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Line$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/inline"
+          }
+        }
+      },
+      "required": [
+        "_class",
+        "type",
+        "name",
+        "children"
+      ],
+      "description": "Line.",
+      "$id": "Line"
+    },
+    "ruling": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Ruling$"
+        },
+        "repeat": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "_class",
+        "repeat"
+      ],
+      "description": "Ruling.",
+      "$id": "Ruling"
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^State$"
+        },
+        "extent": {
+          "type": "string"
+        },
+        "qualification": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "lacuna": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_class"
+      ],
+      "description": "State.",
+      "$id": "State"
+    },
+    "seal": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Seal$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_class",
+        "type",
+        "name"
+      ],
+      "description": "Seal.",
+      "$id": "Seal"
+    },
+    "content": {
+      "$id": "content",
+      "description": "Content elements.",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/line"
+        },
+        {
+          "$ref": "#/definitions/ruling"
+        },
+        {
+          "$ref": "#/definitions/state"
+        },
+        {
+          "$ref": "#/definitions/seal"
+        }
+      ]
+    },
+    "column": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Column$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/content"
+          }
+        }
+      },
+      "required": [
+        "_class",
+        "type",
+        "name",
+        "children"
+      ],
+      "description": "Column.",
+      "$id": "Column"
+    },
+    "surface": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Surface$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/content"
+              },
+              {
+                "$ref": "#/definitions/column"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "_class",
+        "type",
+        "name",
+        "children"
+      ],
+      "description": "Surface.",
+      "$id": "Surface"
+    },
+    "object": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string",
+          "pattern": "^Object$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/surface"
+          }
+        }
+      },
+      "required": [
+        "_class",
+        "type",
+        "name",
+        "children"
+      ],
+      "description": "Object.",
+      "$id": "Object"
+    }
+  }
+}

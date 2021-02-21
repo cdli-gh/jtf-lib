@@ -1,0 +1,98 @@
+[
+ {
+   "ASCII-ATF": "sz",
+   "Unicode-ATF": "š",
+   "Character": "U+161",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "SZ",
+   "Unicode-ATF": "Š",
+   "Character": "U+160",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "s,",
+   "Unicode-ATF": "ṣ",
+   "Character": "U+1E63",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "S,",
+   "Unicode-ATF": "Ṣ",
+   "Character": "U+1E62",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "t,",
+   "Unicode-ATF": "ṭ",
+   "Character": "U+1E6D",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "T,",
+   "Unicode-ATF": "Ṭ",
+   "Character": "U+1E6C",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "s'",
+   "Unicode-ATF": "ś",
+   "Character": "U+015B",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "S'",
+   "Unicode-ATF": "Ś",
+   "Character": "U+015A",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "'",
+   "Unicode-ATF": "ʾ",
+   "Character": "U+02BE",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "0-9",
+   "Unicode-ATF": "₀-₉",
+   "Character": "U+2080-U+2089",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "x",
+   "Unicode-ATF": "ₓ",
+   "Character": "U+208A",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "X",
+   "Unicode-ATF": "ₓ",
+   "Character": "U+208A",
+   "CDLI-Strict": "yes"
+ },
+ {
+   "ASCII-ATF": "h,",
+   "Unicode-ATF": "ḫ",
+   "Character": "U+1E2B",
+   "CDLI-Strict": "no"
+ },
+ {
+   "ASCII-ATF": "H,",
+   "Unicode-ATF": "Ḫ",
+   "Character": "U+1E2A",
+   "CDLI-Strict": "no"
+ },
+ {
+   "ASCII-ATF": "j",
+   "Unicode-ATF": "ŋ",
+   "Character": "U+014B",
+   "CDLI-Strict": "no"
+ },
+ {
+   "ASCII-ATF": "J",
+   "Unicode-ATF": "Ŋ",
+   "Character": "U+014A",
+   "CDLI-Strict": "no"
+ }
+]

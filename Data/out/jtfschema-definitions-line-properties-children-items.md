@@ -1,0 +1,16 @@
+# Untitled schema Schema
+
+```txt
+undefined#/definitions/line/properties/children/items
+```
+
+
+
+
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                              |
+| :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ----------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [JTFSchema.schema.json\*](JTFSchema.schema.json "open original schema") |
+
+## items Type
+
+unknown

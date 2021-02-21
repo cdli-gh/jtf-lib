@@ -1,0 +1,74 @@
+[
+ {
+   "Modifier": "curved",
+   "ATF": "@c",
+   "Example": "AŠ@c",
+   "Sign": ""
+ },
+ {
+   "Modifier": "flat",
+   "ATF": "@f",
+   "Example": "1(N01@f)",
+   "Sign": ""
+ },
+ {
+   "Modifier": "gunu (4 extra wedges)",
+   "ATF": "@g",
+   "Example": "DU@g",
+   "Sign": ""
+ },
+ {
+   "Modifier": "sheshig (added še-sign)",
+   "ATF": "@s",
+   "Example": "DU@s",
+   "Sign": ""
+ },
+ {
+   "Modifier": "tenu (slanting)",
+   "ATF": "@t",
+   "Example": "GAN₂@t",
+   "Sign": ""
+ },
+ {
+   "Modifier": "nutillu (unfinished)",
+   "ATF": "@n",
+   "Example": "SAG@n",
+   "Sign": ""
+ },
+ {
+   "Modifier": "zidatenu (slanting right)",
+   "ATF": "@z",
+   "Example": "AŠ@z",
+   "Sign": ""
+ },
+ {
+   "Modifier": "kabatenu (slanting left)",
+   "ATF": "@k",
+   "Example": "AŠ@k",
+   "Sign": ""
+ },
+ {
+   "Modifier": "vertically reflected",
+   "ATF": "@r",
+   "Example": "U@r",
+   "Sign": ""
+ },
+ {
+   "Modifier": "horizontally reflected",
+   "ATF": "@h",
+   "Example": "N07~a@h",
+   "Sign": ""
+ },
+ {
+   "Modifier": "rotated",
+   "ATF": "@<DIGITS>",
+   "Example": "NAGA@180",
+   "Sign": ""
+ },
+ {
+   "Modifier": "variant",
+   "ATF": "@v",
+   "Example": "4(ban₂)@v",
+   "Sign": ""
+ }
+]
