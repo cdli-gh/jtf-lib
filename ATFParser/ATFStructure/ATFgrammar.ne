@@ -84,7 +84,7 @@ inter -> OBJECT:+
 
 after -> afterP NL:?
 
-OBJECT -> object NL (SURFACE | ( interP | comment ) NL):*
+OBJECT -> ( object NL object_tail | seal_object NL seal_object_tail )
 {%
 d => {
 	d = flatAll(d);
@@ -93,6 +93,11 @@ d => {
 	return object;
 }
 %}
+
+seal_object_tail -> COLUMN:* | children_text_seal:*
+object_tail ->
+	  (( interP | comment | state ) NL):* SURFACE:+
+	| (( interP | comment | state ) NL):*
 
 SURFACE -> surface NL (state NL):* (children_text:* | COLUMN:*)
 {%
@@ -114,9 +119,13 @@ d => {
 }
 %}
 
+children_text_seal -> 
+	LINE
+	| ( interP | link | ruling | state | comment | milestone ) NL
+
 children_text -> 
 	LINE
-	| ( interP | link | ruling | state | sealing | comment | milestone) NL
+	| ( interP | link | ruling | state | seal_impression | comment | milestone) NL
 
 #===/ &-statement /===========================================================
 
@@ -235,11 +244,13 @@ surface -> %AT %surface
 		}} 
 	%}
 
-sealing -> %AT %sealing endtext
+seal_object -> %AT %seal_object endtext
+# seal object
+# for seal text representation, s. seal_impression
 {% d => {
 	return {
-		_class: 'sealing',
-		type: d[1].text,
+		_class: 'object',
+		type: 'seal impression',
 		...(d[2]) && { name: d[2]},
 	};
 }
@@ -265,6 +276,8 @@ milestone -> %AT %milestone endtext
 
 #===/ $-lines /===============================================================
 
+#---/ Ruling /----------------------------------------------------------------
+
 @{%
 const rulingTypeDict = {single: 1, double: 2, triple: 3};
 %}
@@ -276,6 +289,19 @@ ruling -> BUCK %ruling_type %WS %ruling
 		_class: 'ruling',
 		repeat: repeat,
 }}
+%}
+
+#---/ Seal impression /-------------------------------------------------------
+
+seal_impression -> BUCK %seal %endtext
+# seal instance in text
+# for seal content, see seal_object
+{% d => { 
+	return {
+		_class: 'seal',
+		...(d[2]) && { name: d[2]},
+	};
+}
 %}
 
 #---/ State /-----------------------------------------------------------------
@@ -312,10 +338,7 @@ state_strict -> BUCK qualification:? extent:? scope:? state scope_NS:? flag:?
 }}
 %}
 
-state_loose -> BUCK ( %stateLoose | %seal )
-#
-# ToDo: Move seal state to separate class.
-#
+state_loose -> BUCK %stateLoose
 {% d => { 
 	return {
 		_class: 'state',

@@ -1,7 +1,7 @@
 {
   "name": "jtf-lib",
   "version": "0.1.0",
-  "description": "JSON Transliteration Format (JTF) converter & ATF parser.",
+  "description": "JSON Transliteration Format (JTF) API & ATF parser.",
   "main": "index.js",
   "scripts": {
     "test": "test"
@@ -23,6 +23,7 @@
     "axios": "^0.21.1",
     "he": "^1.2.0",
     "html-entities": "^2.1.0",
+    "jtf-signlist": "github:cdli-gh/jtf-signlist",
     "moo": "^0.5.0",
     "nearley": "^2.19.0",
     "node-html-parser": "^1.1.16",

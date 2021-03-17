@@ -87,13 +87,9 @@ var grammar = {
     {"name": "after$ebnf$1", "symbols": ["NL"], "postprocess": id},
     {"name": "after$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "after", "symbols": ["afterP", "after$ebnf$1"]},
-    {"name": "OBJECT$ebnf$1", "symbols": []},
-    {"name": "OBJECT$ebnf$1$subexpression$1", "symbols": ["SURFACE"]},
-    {"name": "OBJECT$ebnf$1$subexpression$1$subexpression$1", "symbols": ["interP"]},
-    {"name": "OBJECT$ebnf$1$subexpression$1$subexpression$1", "symbols": ["comment"]},
-    {"name": "OBJECT$ebnf$1$subexpression$1", "symbols": ["OBJECT$ebnf$1$subexpression$1$subexpression$1", "NL"]},
-    {"name": "OBJECT$ebnf$1", "symbols": ["OBJECT$ebnf$1", "OBJECT$ebnf$1$subexpression$1"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "OBJECT", "symbols": ["object", "NL", "OBJECT$ebnf$1"], "postprocess": 
+    {"name": "OBJECT$subexpression$1", "symbols": ["object", "NL", "object_tail"]},
+    {"name": "OBJECT$subexpression$1", "symbols": ["seal_object", "NL", "seal_object_tail"]},
+    {"name": "OBJECT", "symbols": ["OBJECT$subexpression$1"], "postprocess": 
         d => {
         	d = flatAll(d);
         	let object = d.shift();
@@ -101,6 +97,28 @@ var grammar = {
         	return object;
         }
         },
+    {"name": "seal_object_tail$ebnf$1", "symbols": []},
+    {"name": "seal_object_tail$ebnf$1", "symbols": ["seal_object_tail$ebnf$1", "COLUMN"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "seal_object_tail", "symbols": ["seal_object_tail$ebnf$1"]},
+    {"name": "seal_object_tail$ebnf$2", "symbols": []},
+    {"name": "seal_object_tail$ebnf$2", "symbols": ["seal_object_tail$ebnf$2", "children_text_seal"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "seal_object_tail", "symbols": ["seal_object_tail$ebnf$2"]},
+    {"name": "object_tail$ebnf$1", "symbols": []},
+    {"name": "object_tail$ebnf$1$subexpression$1$subexpression$1", "symbols": ["interP"]},
+    {"name": "object_tail$ebnf$1$subexpression$1$subexpression$1", "symbols": ["comment"]},
+    {"name": "object_tail$ebnf$1$subexpression$1$subexpression$1", "symbols": ["state"]},
+    {"name": "object_tail$ebnf$1$subexpression$1", "symbols": ["object_tail$ebnf$1$subexpression$1$subexpression$1", "NL"]},
+    {"name": "object_tail$ebnf$1", "symbols": ["object_tail$ebnf$1", "object_tail$ebnf$1$subexpression$1"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "object_tail$ebnf$2", "symbols": ["SURFACE"]},
+    {"name": "object_tail$ebnf$2", "symbols": ["object_tail$ebnf$2", "SURFACE"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "object_tail", "symbols": ["object_tail$ebnf$1", "object_tail$ebnf$2"]},
+    {"name": "object_tail$ebnf$3", "symbols": []},
+    {"name": "object_tail$ebnf$3$subexpression$1$subexpression$1", "symbols": ["interP"]},
+    {"name": "object_tail$ebnf$3$subexpression$1$subexpression$1", "symbols": ["comment"]},
+    {"name": "object_tail$ebnf$3$subexpression$1$subexpression$1", "symbols": ["state"]},
+    {"name": "object_tail$ebnf$3$subexpression$1", "symbols": ["object_tail$ebnf$3$subexpression$1$subexpression$1", "NL"]},
+    {"name": "object_tail$ebnf$3", "symbols": ["object_tail$ebnf$3", "object_tail$ebnf$3$subexpression$1"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "object_tail", "symbols": ["object_tail$ebnf$3"]},
     {"name": "SURFACE$ebnf$1", "symbols": []},
     {"name": "SURFACE$ebnf$1$subexpression$1", "symbols": ["state", "NL"]},
     {"name": "SURFACE$ebnf$1", "symbols": ["SURFACE$ebnf$1", "SURFACE$ebnf$1$subexpression$1"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
@@ -129,12 +147,20 @@ var grammar = {
         	return column;
         }
         },
+    {"name": "children_text_seal", "symbols": ["LINE"]},
+    {"name": "children_text_seal$subexpression$1", "symbols": ["interP"]},
+    {"name": "children_text_seal$subexpression$1", "symbols": ["link"]},
+    {"name": "children_text_seal$subexpression$1", "symbols": ["ruling"]},
+    {"name": "children_text_seal$subexpression$1", "symbols": ["state"]},
+    {"name": "children_text_seal$subexpression$1", "symbols": ["comment"]},
+    {"name": "children_text_seal$subexpression$1", "symbols": ["milestone"]},
+    {"name": "children_text_seal", "symbols": ["children_text_seal$subexpression$1", "NL"]},
     {"name": "children_text", "symbols": ["LINE"]},
     {"name": "children_text$subexpression$1", "symbols": ["interP"]},
     {"name": "children_text$subexpression$1", "symbols": ["link"]},
     {"name": "children_text$subexpression$1", "symbols": ["ruling"]},
     {"name": "children_text$subexpression$1", "symbols": ["state"]},
-    {"name": "children_text$subexpression$1", "symbols": ["sealing"]},
+    {"name": "children_text$subexpression$1", "symbols": ["seal_impression"]},
     {"name": "children_text$subexpression$1", "symbols": ["comment"]},
     {"name": "children_text$subexpression$1", "symbols": ["milestone"]},
     {"name": "children_text", "symbols": ["children_text$subexpression$1", "NL"]},
@@ -234,10 +260,10 @@ var grammar = {
         	name: d[2],
         }} 
         	},
-    {"name": "sealing", "symbols": [(lexer.has("AT") ? {type: "AT"} : AT), (lexer.has("sealing") ? {type: "sealing"} : sealing), "endtext"], "postprocess":  d => {
+    {"name": "seal_object", "symbols": [(lexer.has("AT") ? {type: "AT"} : AT), (lexer.has("seal_object") ? {type: "seal_object"} : seal_object), "endtext"], "postprocess":  d => {
         	return {
-        		_class: 'sealing',
-        		type: d[1].text,
+        		_class: 'object',
+        		type: 'seal impression',
         		...(d[2]) && { name: d[2]},
         	};
         }
@@ -262,6 +288,13 @@ var grammar = {
         		_class: 'ruling',
         		repeat: repeat,
         }}
+        },
+    {"name": "seal_impression", "symbols": ["BUCK", (lexer.has("seal") ? {type: "seal"} : seal), (lexer.has("endtext") ? {type: "endtext"} : endtext)], "postprocess":  d => { 
+        	return {
+        		_class: 'seal',
+        		...(d[2]) && { name: d[2]},
+        	};
+        }
         },
     {"name": "state", "symbols": ["state_strict"]},
     {"name": "state", "symbols": ["state_loose"]},
@@ -297,9 +330,7 @@ var grammar = {
         		flag: flag,
         }}
         },
-    {"name": "state_loose$subexpression$1", "symbols": [(lexer.has("stateLoose") ? {type: "stateLoose"} : stateLoose)]},
-    {"name": "state_loose$subexpression$1", "symbols": [(lexer.has("seal") ? {type: "seal"} : seal)]},
-    {"name": "state_loose", "symbols": ["BUCK", "state_loose$subexpression$1"], "postprocess":  d => { 
+    {"name": "state_loose", "symbols": ["BUCK", (lexer.has("stateLoose") ? {type: "stateLoose"} : stateLoose)], "postprocess":  d => { 
         	return {
         		_class: 'state',
         		type: 'loose',

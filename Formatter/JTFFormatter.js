@@ -13,7 +13,7 @@
 /*---/ Imports /--*/
 
 const D = require('../Data/Data.js');
-const SL = require('../../jtf-signlist/index.js');
+const SL = require('jtf-signlist/index');
 
 /*---/ JTF Formatter /--*/
 
@@ -25,7 +25,7 @@ const JTFFormatter = function( JTFobj, i=0, parentID=null ){
     warnings = [];
     // ToDo: insert here metadata processor, if needed
     JTFobj.objects = JTFobj.objects.map( (o, i) => {
-      o.id = `${i}`;
+      o.id = `${JTFobj.meta.p_number}__${i}`;
       return formatChildren(o) 
     });
     if (warnings.length>0){ JTFobj.warnings = [...warnings] }

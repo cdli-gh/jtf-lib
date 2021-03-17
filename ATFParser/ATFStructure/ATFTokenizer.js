@@ -53,7 +53,7 @@ const lexerData = {
 			},
 		protocolAfter:	{match: ['note'], next: 'REST'},
 		protocolInter:	{
-			match: ['bib', 'lem', 'note', 'var', 'lang', 'tr'],
+			match: ['bib', 'lem', 'note', 'var', 'lang', 'tr.en', 'tr.gr', 'tr.fr', 'tr.it', 'tr.sp'],
 			next: 'REST'
 			},
 		comment:	{match: /[^].+(?=$)/, pop: true},
@@ -77,7 +77,7 @@ const lexerData = {
 		object_cont:	{match: ['fragment', 'object'], next: 'REST'},
 		surface:	{match: ['obverse', 'reverse', 'left', 'right', 'top', 'bottom'], pop: true},
 		surface_qualified: {match: ['face', 'surface', 'edge'], next: 'REST'},
-		sealing:	{match: ['seal'], next: 'REST'},
+		seal_object:	{match: ['seal'], next: 'REST'},
 		column:	{match: ['column'], next: 'REST'},
 		milestone:	{match: ['m=division '], next: 'REST'},
 		translation:	{match: ['label', 'h1', 'h2', 'h3', 'unit', 'span'], next: 'REST'},
