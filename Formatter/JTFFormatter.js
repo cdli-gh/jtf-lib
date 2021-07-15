@@ -45,10 +45,10 @@ const JTFFormatter = function( JTFobj, i=0, parentID=null ){
 
 const handleUndefinedClass = function(JTFobj){
   //
-  console.log(
+/*   console.log(
     'JTF formatter WARNING: skipped object with undefined _class\n',
     JTFobj
-  );
+  ); */
   pushWarning({
     agent: 'JTFFormatter',
     type: 'Unknown JTF _class',
@@ -66,7 +66,7 @@ const pushWarning = function( warning ){
 
 const formatChildren = function( object ){
   //
-  if (!object.children) { return object };
+  if (!object.children || !object.children.map) { return object };
   object.children.map(function( c, i ){
     c.parent = object;
     c = JTFFormatter( c, i, object.id );
@@ -316,7 +316,7 @@ const formatChr = function( Chr, separator=null ){
     let ChrEntries = SL.findArticlesByATF(ChrATF).values().next().value;
     Chr.position = (ChrEntries) ? ChrEntries.vDict.position : 'pre';
   };
-  if (Chr.children){
+  if (Chr.children && Chr.children.map){
     Chr.children = Chr.children.map( c => { 
       if (c._class==='chr'){ formatChr( c ) };
       return c;

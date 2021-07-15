@@ -65,7 +65,7 @@ d => {
 	};
 	// IMPORTANT!
 	// Reset globals:
-	console.log( 'before g reset', {globals: [meta, errors, warnings], resopnse: response} )
+	// console.log( 'before globals reset', {globals: [meta, errors, warnings], resopnse: response} )
 	meta = {};
 	errors = [];
 	warnings = [];

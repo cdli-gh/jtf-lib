@@ -22,7 +22,7 @@ const parse = function( parserClass, p_name, data, reference='', ambigLog=true )
 	} catch(e) {
 		let err_obj = processError(e, p_name);
 		errors.push(err_obj);
-		console.log( 'error catched', errors )
+		//console.log( 'error catched', errors )
 	};
 	let response_obj = {
 		reference: reference,
@@ -33,7 +33,7 @@ const parse = function( parserClass, p_name, data, reference='', ambigLog=true )
 	};
 	if (response){
 		if (response.errors){
-			console.log('errors in response', response)
+			//console.log('errors in response', response)
 			let errors_add = response.errors.map(e => processError(e, p_name))
 			response_obj.errors = [...errors, ...errors_add]
 		};
@@ -80,8 +80,8 @@ var re_error_token_data = /.*Unexpected ([^ ]+) token: "([^"]+)".*/
 
 const processError = function( error, p_name ){
 	// Parse error message.
-	console.log('ATF '+p_name+' Parser ERROR:');
-	console.log(error);
+	//console.log('ATF '+p_name+' Parser ERROR:');
+	//console.log(error);
 	if ( error.agent ) {
 		// already processed
 		return error;
@@ -100,7 +100,7 @@ const processError = function( error, p_name ){
 		};
 		return err_obj;
 	} else { 
-		console.log('unhandled error:', error);
+		//console.log('unhandled error:', error);
 		return error;
 	};
 };

@@ -12,7 +12,7 @@ const vow_3 = [
 const vowels = [].concat(vow_plain, vow_2, vow_3)
 
 const aleph = [
-  "’", "ʔ", "'", "ʾ"
+  "ʾ", "’", "ʔ", "'"
 ]
 const shin = [
   'š', 's<', 'c', 'sz'
@@ -60,8 +60,8 @@ const types = [
   ['syl', []],
   ['log', ['sumerogram', 'akkadogram', 'abbreviation']],
   ['det', []],
-  ['pnc', []],
   ['num', []],
+  ['pnc', []],
   ['raw', ['unclear', 'instance']],
   ]
 

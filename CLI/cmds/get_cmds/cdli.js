@@ -7,33 +7,68 @@ const { ATF2JTF } = require('../../../Converters/ATF2JTF.js');
 const regexData = /(?:class="revcontent">)(?<version>[\s\S]+?)<br>(?<atf>[\s\S]+?)(?:<\/div>)/g
 const regexVersion = /(?<date>\d{4}-\d{2}-\d{2}) (?<time>\d{2}:\d{2}:\d{2}), entered by (?<by>.+?) for (?<for>.+?) $/
 
-exports.command = 'cdli <PNumbers..>'
-//exports.command = '<name> <url>'
-exports.desc = 'Get CDLI data for <PNumbers..> and save as JTF collection'
-exports.builder = {}
+const { postprocess } = require('../get.js');
 
-exports.handler = function (argv) {
-  //
-  let collection = argv.PNumbers.map( PNumber => getCDLIbyPNumber( PNumber ));
-  Promise.all(collection).then( data2save => {
-	  fs.writeFile('test.jtfc', JSON.stringify(data2save), saveCallback)
-  }).catch( (e) => {
-	  console.log('An error occured while fetching CDLI data:', e)
-  });
+exports.command = 'cdli [pipe] [abstract] <path|pNumbers..>';
+exports.desc = 'Get CDLI data for p-numbers and save as JTF collection.';
+exports.builder = {
+  path: {
+    type: 'string',
+    desc: 'path to a text file with a list of p-numbers',
+  },
+  pNumbers: {
+    type: 'string',
+    desc: 'P-numbers (e.g.: P000001 P000002)',
+  },
+  pipe: {
+    alias: ['p'],
+    type: 'boolean',
+    default: false,
+    desc: 'Pipe output to localhost:9000 response',
+  },
+  abstract: {
+    alias: ['a'],
+    type: 'boolean',
+    default: false,
+    desc: 'Output "abstract" sign representation',
+  },
 };
 
-const saveCallback = (err, data) => { 
+exports.handler = function( argv ){
   //
-  return console.log(data);
-  if (err) {
-    return console.log(err);
-  }
+  let pNumbersArr = (argv.path.length===1) 
+    ? pNumbersFromFile( argv.path[0] )
+    : null;
+  let collection = ( pNumbersArr ) 
+    ? getCollection( pNumbersArr )
+    : getCollection( argv.pNumbers );
+  collection = [...new Set(collection)];
+  console.log(`\nFound ${collection.length} p-number(s)\n`);
+  postprocess(collection, argv);
+};
+
+const pNumbersFromFile = ( path ) => {
+    // Extract PNumbers from text file.
+    try {
+        fs.accessSync(path, fs.constants.F_OK);
+        let pNumbers = Array.from(
+          fs.readFileSync(path, 'utf8').matchAll(/[p|P]\d{6}/g),
+          m => m[0]);
+        return pNumbers;
+    } catch (e){
+        //console.error(`File ${path} does not exist`);
+    };
+};
+
+const getCollection = ( pNumbers ) => {
+    //
+    return pNumbers.map( PNumber => getCDLIbyPNumber( PNumber ));
 };
 
 const getCDLIbyPNumber = ( PNumber ) => {
   //
   let ID = PNumber.slice(1,7);
-  const url = `https://cdli.ucla.edu/search/revhistory.php/?txtpnumber=${ID}`;
+  const url = `https://cdli.ucla.edu/search/revhistory.php?txtpnumber=${ID}`;
   return axios.get(url, { headers: { Accept: "application/json" } })
     .then(res => {
     let { data } = res;
@@ -51,8 +86,6 @@ const getCDLIbyPNumber = ( PNumber ) => {
         atf: atf,
       });
     };
-    JTF = ATF2JTF( resultArr[0].atf );
-    return JTF;
+    return ATF2JTF( resultArr[0].atf, PNumber );
    });
 };
-
