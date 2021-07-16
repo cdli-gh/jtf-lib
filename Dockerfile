@@ -1,5 +1,5 @@
 # stable version of node 
-FROM node:12.18.1
+FROM node:14
 
 # shift the working directory to /var/app/
 WORKDIR /var/app
@@ -11,6 +11,9 @@ COPY package-lock.json package-lock.json
 #set environment variables
 ENV PORT=3003 
 
+#expose 
+EXPOSE 3003
+
 # install node modules
 RUN npm install
 
@@ -18,4 +21,4 @@ RUN npm install
 COPY . .
 
 # make app up and running
-CMD [ "node", "index.js" ]
+CMD [ "npm", "start" ]
