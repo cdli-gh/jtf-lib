@@ -18,19 +18,23 @@ const { importKeiBi } = require('./Loaders/KeiBiLoader.js');
 const { JTFChar2ATFO } = require('./Converters/JTF2ATF_O.js');
 
 const { Create, Read, Update, Delete, Strip } = require('./API/JTFCRUD.js');
+const { JTF2SignNames } = require("./Converters/JTF2SignNames.js");
 
 //MiddleWares
-app.use(bodyParser.json())
+app. use(bodyParser. json({
+	limit: '50mb'
+	}));
 app.use(cookieparser());
 app.use(cors({
     origin: '*',
     optionsSuccessStatus: 200
   }));
 
-app.get('/',(req,res,next)=>{
-    res.json({
-        'jtf-lib': "server-running"
-    })
+//  
+app.post('/getSignnames', (req,res)=>{
+	const jtf = req.body;
+	const output = JTF2SignNames(jtf);
+	res.send(output);
 })
 
 //Listening on 8081
