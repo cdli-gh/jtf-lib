@@ -18,7 +18,7 @@ const { importKeiBi } = require('./Loaders/KeiBiLoader.js');
 const { JTFChar2ATFO } = require('./Converters/JTF2ATF_O.js');
 
 const { Create, Read, Update, Delete, Strip } = require('./API/JTFCRUD.js');
-const { JTF2SignNames } = require("./Converters/JTF2SignNames.js");
+const { JTF2SignNames, ATF2SignNames } = require("./Converters/JTF2SignNames.js");
 
 //MiddleWares
 app. use(bodyParser. json({
@@ -30,13 +30,21 @@ app.use(cors({
     optionsSuccessStatus: 200
   }));
 
-//  
-app.post('/getSignnames', (req,res)=>{
-	const jtf = req.body;
+//JTF-to-Signnames 
+app.post('/getSignnamesJTF', (req,res)=>{
+
+	const jtf = req.body.jtf;
 	const output = JTF2SignNames(jtf);
 	res.send(output);
 })
 
+//ATF-to-Signnames
+app.post('/getSignnamesATF', (req,res)=>{
+
+	const atf = req.body.atf;
+	const output = ATF2SignNames(jtf);
+	res.send(output);
+})
 //Listening on 8081
 app.listen(port, () => {
     console.log(`app is running on ${port}`);
