@@ -5,7 +5,7 @@ const cookieparser = require('cookie-parser');
 var bodyParser = require('body-parser')
 const cors = require('cors');
 const port = process.env.PORT || 3003;
-
+const routes = require('./routes/routes.js')
 /* JTF Schema */
 const { JTFSchema, JTFSchema2Str } = require('./Data/JTFSchema.js');
 
@@ -18,7 +18,7 @@ const { importKeiBi } = require('./Loaders/KeiBiLoader.js');
 const { JTFChar2ATFO } = require('./Converters/JTF2ATF_O.js');
 
 const { Create, Read, Update, Delete, Strip } = require('./API/JTFCRUD.js');
-const { JTF2SignNames, ATF2SignNames } = require("./Converters/JTF2SignNames.js");
+
 
 //MiddleWares
 app. use(bodyParser. json({
@@ -30,24 +30,14 @@ app.use(cors({
     optionsSuccessStatus: 200
   }));
 
-//JTF-to-Signnames 
-app.post('/getSignnamesJTF', (req,res)=>{
+app.use('/api',routes);
 
-	const jtf = req.body.jtf;
-	const output = JTF2SignNames(jtf);
-	res.send(output);
-})
-
-//ATF-to-Signnames
-app.post('/getSignnamesATF', (req,res)=>{
-
-	const atf = req.body.atf;
-	const output = ATF2SignNames(jtf);
-	res.send(output);
+app.get('/',(req,res) => {
+	res.send("JTF-lib");
 })
 //Listening on 8081
 app.listen(port, () => {
-    console.log(`app is running on ${port}`);
+    console.log(`app is running on aa ${port}`);
 });
 
 /* JTF to ATF */
@@ -72,4 +62,4 @@ module.exports = {
 	Update,
 	Delete,
 	Strip,
-};
+};	
