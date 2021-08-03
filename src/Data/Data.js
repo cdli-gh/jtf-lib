@@ -17,6 +17,9 @@ const aleph = [
 const shin = [
   'š', 's<', 'c', 'sz'
 ]
+const sin = [
+  'ś', "s'"
+]
 const tsade = [
   'ṣ', 's,', 'ts'
 ]
@@ -27,10 +30,13 @@ const kheth = [
   'ḫ', 'h'
 ]  
 const jod = [
-  'y', 'j'
+  'y',// 'j' //note ambiguity, s. ng below.
 ]
 const quf = [
   'q', 'k,'
+]
+const ng = [
+  'ŋ', 'ĝ', 'j'
 ]
 
 const aliases = [aleph, shin, tsade, teth, kheth, jod, quf]

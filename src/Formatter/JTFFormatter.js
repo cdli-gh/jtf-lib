@@ -32,7 +32,7 @@ const JTFFormatter = function( JTFobj, i=0, parentID=null ){
   } else {
     JTFobj.id = (parentID) ? `${parentID}_${i}` : `${i}`;
     if (JTFobj.errors) {
-      console.log('Add error handling:', JTFobj);
+      //console.log('Add error handling:', JTFobj);
     } else if (!formattersByClass[JTFobj._class]) {
       JTFobj = handleUndefinedClass(JTFobj);
     } else {
