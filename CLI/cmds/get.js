@@ -14,7 +14,6 @@ exports.handler = function (argv) {};
 
 exports.postprocess = async (collection, argv={}) => {
     // Check for errors, save to file or pipe collection data.
-    console.log(collection);
     collection = (Array.isArray(collection)) ? collection : [collection];
     collection = await Promise.allSettled(collection);
     let [fulfilledArr, nonFulfilledArr] = sortResult(collection);
@@ -27,7 +26,6 @@ exports.postprocess = async (collection, argv={}) => {
 
 const output = ( arr, argv ) => {
     //
-    console.log( arr, argv );
     if ( argv.abstract ){
         abstractOutput( arr, argv );
     } else {
