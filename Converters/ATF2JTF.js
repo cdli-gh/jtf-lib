@@ -46,11 +46,12 @@ const ATF2JTF = function( atfStr, reference='', ambigLog=false ){
 	return JTFFormatter(call);
 };
 
-const ATFLine2JTF = function( atfLineStr, reference='' ){
+const ATFLine2JTF = function( atfLineStr, reference='', ambigLog=false ){
 	// Convert ATF line string to JTF Line.
 	let JTF_raw = line2JTF({children: atfLineStr,}, reference, true);
-	call.JTF = JTFFormatter(JTF_raw);
-	return call;
+	//var call = parse(ATFTextP, 'structure', atfLineStr, reference, ambigLog);
+	//call.JTF = JTFFormatter(JTF_raw);
+	return JTFFormatter(JTF_raw);
 };
 
 const ATFChar2JTF = function( atfChrStr, reference='' ){

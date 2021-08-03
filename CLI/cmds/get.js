@@ -3,7 +3,7 @@
 const fs = require('fs');
 const http = require('http');
 const createHttpTerminator = require('http-terminator').createHttpTerminator;
-const { JTF2SignNames } = require('../../Converters/JTF2SignNames.js');
+const { JTF2SignNames, JTFLine2SignNames } = require('../../Converters/JTF2SignNames.js');
 
 exports.command = 'get <source>'
 exports.desc = 'Import JTF data'
@@ -14,16 +14,24 @@ exports.handler = function (argv) {};
 
 exports.postprocess = async (collection, argv={}) => {
     // Check for errors, save to file or pipe collection data.
+    console.log(collection);
+    collection = (Array.isArray(collection)) ? collection : [collection];
     collection = await Promise.allSettled(collection);
     let [fulfilledArr, nonFulfilledArr] = sortResult(collection);
     if (fulfilledArr.length>0){
         console.log(`* Converted ${fulfilledArr.length}/${collection.length} atf item(s) to jtf`);
         errorReport(fulfilledArr, nonFulfilledArr);
-        if ( argv.abstract ){
-            abstractOutput( fulfilledArr, argv );
-        } else {
-            collectionOutput(fulfilledArr, argv);
-        };
+        output(fulfilledArr, argv);
+    };
+};
+
+const output = ( arr, argv ) => {
+    //
+    console.log( arr, argv );
+    if ( argv.abstract ){
+        abstractOutput( arr, argv );
+    } else {
+        collectionOutput( arr, argv );
     };
 };
 
@@ -46,23 +54,6 @@ const sortResult = (collection) => {
     return [fulfilledArr, nonFulfilledArr];
 };
 
-const collectionOutput = (fulfilledArr, argv) => {
-    // Save to JTFC file or pipe to stdout.
-    let out = JSON.stringify(fulfilledArr);
-    if (argv.pipe){
-        console.log('* Serving jtf collection');
-        serve( out );
-        //console.log(`* Writing collection to stdout.`);
-        //process.stdout.write(out);
-        //var buffer = Buffer.alloc(Buffer.byteLength(out));
-        //buffer.write(out);
-    } else {
-        let outputName = `${Date.now()}.jtfc`;
-        console.log(`* Saving jtf collection to '${outputName}'.`);
-        fs.writeFile(`./${outputName}.jtfc`, out, saveCallback);
-    };
-};
-
 const errorReport = (fulfilledArr, nonFulfilledArr) => {
     // Check for errors.
     if (nonFulfilledArr.length>0){
@@ -81,21 +72,35 @@ const logRed = ( string ) => {
     console.log("\x1b[41m", string, "\x1b[0m")
 };
 
+const collectionOutput = (fulfilledArr, argv) => {
+    // Save to JTFC file or pipe to stdout.
+    let out = JSON.stringify(fulfilledArr);
+    if (argv.pipe){
+        console.log('* Serving jtf collection');
+        serve( out );
+        //console.log(`* Writing collection to stdout.`);
+        //process.stdout.write(out);
+        //var buffer = Buffer.alloc(Buffer.byteLength(out));
+        //buffer.write(out);
+    } else {
+        let outputName = `${Date.now()}.jtfc`;
+        console.log(`* Saving jtf collection to '${outputName}'.`);
+        fs.writeFile(`./${outputName}.jtfc`, out, saveCallback);
+    };
+};
+
 const abstractOutput = (fulfilledArr, argv) => {
     // Convert "abstract" representation, then save to file or pipe to stdout.
     let abstractArr = fulfilledArr.map( value => {
         return {
           reference: value.reference, 
-          value: JTF2SignNames(value)
+          value: (argv.l) ? JTFLine2SignNames(value) : JTF2SignNames(value),
         }
     });
     let out = JSON.stringify(abstractArr);
     if (argv.pipe){
         console.log('* Serving "abstract" sign text collection');
         serve( out );
-        //process.stdout.write(out);
-        //var buffer = Buffer.alloc(Buffer.byteLength(out));
-        //buffer.write(out);
     } else {
         let outputName = `${Date.now()}_normalized_signs`;
         console.log(`* Saving "abstract" sign text collection to '${outputName}.json'.`);
