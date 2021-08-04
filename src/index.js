@@ -11,6 +11,8 @@ const { importKeiBi } = require('./Loaders/KeiBiLoader.js');
 /* JTF to ATF-O */
 const { JTFChar2ATFO } = require('./Converters/JTF2ATF_O.js');
 
+ const { app }   = require('./endpoint.js');
+
 const { Create, Read, Update, Delete, Strip } = require('./API/JTFCRUD.js');
 
 /* JTF to ATF */
