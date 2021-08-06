@@ -6,6 +6,7 @@ var bodyParser = require('body-parser')
 const cors = require('cors');
 const port = process.env.PORT || 3003;
 const routes = require("./routes/routes.js");
+
 //MiddleWares
 app.use(bodyParser.json())
 app.use(cookieparser());
@@ -20,12 +21,12 @@ app.get('/',(req,res)=>{
     res.json({
         'jtf-lib': "server-running"
     })
-})
+});
 
-//Listening on 8081
+//Listening on 3002
 app.listen(port, () => {
     console.log(`app is running on ${port}`);
 });
 
+module.exports.app = app;
 
-module.exports = app;
