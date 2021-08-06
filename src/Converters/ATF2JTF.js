@@ -15,7 +15,7 @@
 const { parse } = require('../ATFParser/parserTools.js');
 const ATFStructureP = require("../ATFParser/ATFStructure/ATFgrammar.js");
 const ATFTextP = require('../ATFParser/ATFInline/ATFtextGrammar.js');
-const JTFFormatter = require('../Formatter/JTFFormatter.js').JTFFormatter;
+const { JTFFormatter } = require('../Formatter/JTFFormatter.js');
 
 /*---/ ATF string preprocessor /---------------------------------------------*/
 
@@ -48,35 +48,22 @@ const ATF2JTF = function( atfStr, reference='', ambigLog=false ){
 
 const ATFLine2JTF = function( atfLineStr, reference='', ambigLog=false ){
 	// Convert ATF line string to JTF Line.
-	let JTF_raw = line2JTF({children: atfLineStr,}, reference, true);
-	//var call = parse(ATFTextP, 'structure', atfLineStr, reference, ambigLog);
-	//call.JTF = JTFFormatter(JTF_raw);
-	return JTFFormatter(JTF_raw);
+	let [call, JTF_raw] = parseInline({children: atfLineStr,}, reference, true);
+	if (!call.success){
+		return call;
+	};
+	return JTFFormatter(call);
 };
 
 const ATFChar2JTF = function( atfChrStr, reference='' ){
 	// Convert ATF char string to JTF chr.
-	let JTF_raw = line2JTF({children: atfChrStr,}, reference, true);
-	call.JTF = JTFFormatter(JTF_raw).children[0].children[0];
-	return call;
-};
-
-
-/*---/ (Post)proccessors /--------------------------------------------------*/
-
-/*---/ JTF Inline /----*/
-
-const line2JTF = function( line, reference='', getResponse=false ) {
-	// Convert line to UqNU Line dict.
-	line._class = 'line';
-	if (typeof line.children==='string'){
-		let [call, newLine] = parseInline(line, reference, getResponse);
-		if ( !newLine || getResponse ){ return call }
-		line = newLine;
+	let [call, JTF_raw] = parseInline({children: atfLineStr,}, reference, true);
+	if (!call.success){
+		return call;
 	};
-	return inlineFieldMaker( line );
+	call.inline = [call.inline.children[0].children[0]]
+	return JTFFormatter(call);
 };
-
 
 /*---/ ATF inline parser /----*/
 
@@ -93,25 +80,6 @@ const parseInline = function(line, reference=''){
 		return [call, null];
 	};
 	return [call, line];
-};
-
-/*---/ Command line: ATF to JTF from file /----*/
-
-makeJTF = function( sourceType, ...args ){
-	// Make JTF & save to target.
-	
-};
-
-fromCDLI = function( PNumber, target ){
-	// Make JTF & save to target.
-	// Fetch ATF from CDLI by PNumber.
-	
-};
-
-fromATF = function( source, target ){
-	// Make JTF & save to target.
-	// From ATF file.
-	
 };
 
 /*---/ Exports /------------------------------------------------------------*/

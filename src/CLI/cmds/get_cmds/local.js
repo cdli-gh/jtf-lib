@@ -6,7 +6,7 @@ const { JTF2SignNames } = require('../../../Converters/JTF2SignNames.js');
 const { postprocess } = require('../get.js');
 
 exports.command = 'local [pipe] [abstract] <path>';
-exports.desc = 'Get local atf data save as JTF collection.';
+exports.desc = 'Get data from local ATF file.';
 exports.builder = {
   path: {
     type: 'string',

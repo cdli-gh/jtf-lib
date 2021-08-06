@@ -10,7 +10,7 @@ const regexVersion = /(?<date>\d{4}-\d{2}-\d{2}) (?<time>\d{2}:\d{2}:\d{2}), ent
 const { postprocess } = require('../get.js');
 
 exports.command = 'cdli [pipe] [abstract] <path|pNumbers..>';
-exports.desc = 'Get CDLI data for p-numbers and save as JTF collection.';
+exports.desc = 'Get data from CDLI.';
 exports.builder = {
   path: {
     type: 'string',

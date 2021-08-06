@@ -21,14 +21,17 @@ let warnings = [];
 
 const JTFFormatter = function( JTFobj, i=0, parentID=null ){
   // Universal JTF formatter entry point.
-  if ( JTFobj.meta && JTFobj.objects){
-    warnings = [];
+  if ( JTFobj.meta && JTFobj.objects ){
     // ToDo: insert here metadata processor, if needed
     JTFobj.objects = JTFobj.objects.map( (o, i) => {
       o.id = `${JTFobj.meta.p_number}__${i}`;
-      return formatChildren(o) 
+      return formatChildren(o);
     });
-    if (warnings.length>0){ JTFobj.warnings = [...warnings] }
+  } else if (JTFobj.inline) {
+    JTFobj.inline = JTFobj.inline.map( (o, i) => {
+      o.id = (parentID) ? `${parentID}_${i}` : `${i}`;
+      return formatChildren(o);
+    });
   } else {
     JTFobj.id = (parentID) ? `${parentID}_${i}` : `${i}`;
     if (JTFobj.errors) {

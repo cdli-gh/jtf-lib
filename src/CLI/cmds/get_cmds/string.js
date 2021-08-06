@@ -5,11 +5,11 @@ const { ATF2JTF, ATFLine2JTF } = require('../../../Converters/ATF2JTF.js');
 const { postprocess } = require('../get.js');
 
 exports.command = 'string [line] [pipe] [abstract] <string>';
-exports.desc = '';
+exports.desc = 'Get data from ATF string.';
 exports.builder = {
   string: {
     type: 'string',
-    desc: 'ATF(-like) string',
+    desc: 'ATF string',
   },
   line: {
     alias: ['l'],

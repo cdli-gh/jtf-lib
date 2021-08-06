@@ -61,10 +61,10 @@ const ATF2SignNames = ( atf ) => {
 
 const ATFLine2SignNames = ( atf ) => {
     // Shortcut to JTF2SignNames for ATF line string.
-    return JTFLine2SignNames( ATFLine2JTF(atf).JTF.inline );
+    return JTFLine2SignNames( ATFLine2JTF(atf) );
 };
 
 exports.JTF2SignNames = JTF2SignNames;
 exports.JTFLine2SignNames = JTFLine2SignNames;
 exports.ATF2SignNames = ATF2SignNames;
-exports.ATFLine2SignNames = ATFLine2SignNames
+exports.ATFLine2SignNames = ATFLine2SignNames;
