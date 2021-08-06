@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const { JTF2SignNames, ATF2SignNames } = require("../Converters/JTF2SignNames.js");
-const { updateInsciption } = require('../API/DBCRUD.js')
+const { JTF2SignNames, ATF2SignNames, ATFLine2SignNames } = require("../Converters/JTF2SignNames.js");
+
 //JTF-to-Signnames 
 router.post('/getSignnamesJTF',(req,res)=>{
 	const jtf = req.body.jtf;
@@ -16,7 +16,12 @@ router.post('/getSignnamesATF',(req,res)=>{
 	res.send(output);
 });
 
-//update Inscription from uqnu
-router.post('/updateInsciption/:id', updateInsciption);
+//ATFLine-to-Signnames
+router.post('/getSignnamesATFLINE',(req,res)=>{
+	const atf_line = req.body.atf;
+	const output = ATFLine2SignNames(atf_line);
+	res.send(output);
+});
+
 
 module.exports = router;

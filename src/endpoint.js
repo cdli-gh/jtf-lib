@@ -5,7 +5,7 @@ const cookieparser = require('cookie-parser');
 var bodyParser = require('body-parser')
 const cors = require('cors');
 const port = process.env.PORT || 3003;
-
+const routes = require("./routes/routes.js");
 //MiddleWares
 app.use(bodyParser.json())
 app.use(cookieparser());
@@ -14,7 +14,9 @@ app.use(cors({
     optionsSuccessStatus: 200
   }));
 
-app.get('/',(req,res,next)=>{
+app.use('/api',routes); 
+
+app.get('/',(req,res)=>{ 
     res.json({
         'jtf-lib': "server-running"
     })
@@ -24,3 +26,6 @@ app.get('/',(req,res,next)=>{
 app.listen(port, () => {
     console.log(`app is running on ${port}`);
 });
+
+
+module.exports = app;
