@@ -4,7 +4,7 @@
   "description": "JSON Transliteration Format (JTF) API & ATF parser.",
   "main": "./src/index.js",
   "scripts": {
-    "start": "nodemon ./src/index.js",
+    "start": "nodemon ./src/endpoint.js",
     "test": "test"
   },
   "bin": {
