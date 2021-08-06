@@ -110,6 +110,7 @@ const nearlyError2Object = function(error, p_name){
 	let [keys, trees, err_lines] = nearlyErrorAnalyze(error);
 	let match = error.match(re_invalid_syntax);
 	let matchToken = error.match(re_error_token_data);
+	console.log('!!!!!!!!', error, match)
 	let err_obj = {
 		text: error,
 		agent: 'ATF '+p_name,
