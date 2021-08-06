@@ -18,7 +18,8 @@ const { Create, Read, Update, Delete, Strip } = require('./API/JTFCRUD.js');
 /* JTF to ATF */
 // ToDo. 
 
-const { app } = require('./endpoint.js');
+/* endpoint server */
+const { runserver } = require('./endpoint.js');
 
 /*---/ exports /------------------------------------------------------------*/
 

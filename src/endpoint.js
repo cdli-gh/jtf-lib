@@ -17,16 +17,20 @@ app.use(cors({
 
 app.use('/api',routes); 
 
-app.get('/',(req,res)=>{ 
-    res.json({
-        'jtf-lib': "server-running"
-    })
-});
+const runserver = () => {
 
-//Listening on 3002
-app.listen(port, () => {
-    console.log(`app is running on ${port}`);
-});
+    app.get('/',(req,res)=>{ 
+        res.json({
+            'jtf-lib': "server-running"
+        })
+    });
+
+    //Listening on 3002
+
+    app.listen(port, () => {
+        console.log(`app is running on ${port}`);
+    });
+};
 
 module.exports.app = app;
-
+module.exports.runserver = runserver;
