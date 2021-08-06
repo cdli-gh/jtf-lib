@@ -16,11 +16,7 @@ const { importKeiBi } = require('./Loaders/KeiBiLoader.js');
 const { Create, Read, Update, Delete, Strip } = require('./API/JTFCRUD.js');
 
 /* JTF to ATF */
-// ToDo. 
-
-/* endpoint server */
-const { runserver } = require('./endpoint.js');
-
+// ToDo
 /*---/ exports /------------------------------------------------------------*/
 
 module.exports = {

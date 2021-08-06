@@ -17,8 +17,6 @@ app.use(cors({
 
 app.use('/api',routes); 
 
-const runserver = () => {
-
     app.get('/',(req,res)=>{ 
         res.json({
             'jtf-lib': "server-running"
@@ -30,7 +28,7 @@ const runserver = () => {
     app.listen(port, () => {
         console.log(`app is running on ${port}`);
     });
-};
+
 
 module.exports.app = app;
-module.exports.runserver = runserver;
+// module.exports.runserver = runserver;
