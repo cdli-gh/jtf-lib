@@ -1,22 +1,24 @@
-const express = require("express");
-const app = express();
 
-const cookieparser = require('cookie-parser');
-var bodyParser = require('body-parser')
-const cors = require('cors');
-const port = process.env.PORT || 3003;
-const routes = require("./routes/routes.js");
+const runserver = ( port=3003 ) => {
+    //
+    port = (process.env.PORT) ? process.env.PORT : port;
+    
+    const express = require("express");
+    const app = express();
 
-//MiddleWares
-app.use(bodyParser.json())
-app.use(cookieparser());
-app.use(cors({
-    origin: '*',
-    optionsSuccessStatus: 200
-  }));
-
-app.use('/jtf-lib/api',routes); 
-
+    const cookieparser = require('cookie-parser');
+    var bodyParser = require('body-parser')
+    const cors = require('cors');
+    const routes = require("./routes/routes.js"); 
+    
+    //MiddleWares
+    app.use(bodyParser.json())
+    app.use(cookieparser());
+    app.use(cors({
+        origin: '*',
+        optionsSuccessStatus: 200
+      }));
+    app.use('/jtf-lib/api',routes);
     app.get('/',(req,res)=>{ 
         res.json({
             'jtf-lib': "server-running"
@@ -24,11 +26,10 @@ app.use('/jtf-lib/api',routes);
     });
 
     //Listening on 3002
-
     app.listen(port, () => {
         console.log(`app is running on ${port}`);
     });
+};
 
-
-module.exports.app = app;
-// module.exports.runserver = runserver;
+//module.exports.app = app;
+module.exports.runserver = runserver;
