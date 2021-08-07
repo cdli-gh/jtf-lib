@@ -15,7 +15,7 @@ app.use(cors({
     optionsSuccessStatus: 200
   }));
 
-app.use('/api',routes); 
+app.use('/jtf-lib/api',routes); 
 
     app.get('/',(req,res)=>{ 
         res.json({
