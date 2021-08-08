@@ -37,6 +37,13 @@ With yarn:
 `yarn add cdli-gh/jtf-lib`
 <!-- ToDo: Register npm package at www.npmjs.com -->
 
+
+
+
+### API Docs
+
+Endpoints for Signames and ATF/JTF , [Docs](docs/routes.md)
+
 <!--
 ### Quick start
 
