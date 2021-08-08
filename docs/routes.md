@@ -13,4 +13,4 @@ Open endpoints require no Authentication.
 
 * [JTF to Signnames](jtftosignnames.md) : `POST /jtf-lib/api/getSignnamesJTF`
 
-* [ATF to Signnames](atftosignnames.md) : `POST /jtf-lib/api/getSignnamesATF`+
+* [ATF to Signnames](atftosignnames.md) : `POST /jtf-lib/api/getSignnamesATF`
