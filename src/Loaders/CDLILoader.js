@@ -2,19 +2,25 @@
 
 /*---/ imports /------------------------------------------------------------*/
 //const fs = require('fs');
-var he = require('he'); //html entities
+//var he = require('he'); //html entities
 const ATF2JTF = require('../Converters/ATF2JTF.js').ATF2JTF;
-const getHTML = require('./getHTMLData.js').getHTML;
-const importMetaCDLI = require('./CDLIMetaLoader.js').importMeta;
+//const getHTML = require('./getHTMLData.js').getHTML;
+//const importMetaCDLI = require('./CDLIMetaLoader.js').importMeta;
+const axios = require("axios");
+const decode = require('html-entities').decode;
 
 /*---/ globals /------------------------------------------------------------*/
 const ATF_URL = 'https://cdli.ucla.edu/search/revhistory.php/?txtpnumber=';
 
 /*---/ methods /------------------------------------------------------------*/
 
-const importCDLI = async function ( P_Number ) {
+// Clean-up:
+// * Remove `request`, `request-promise`, `node-html-parser`
+//   if not used elsewere.
+
+/* const importCDLI = async function ( P_Number ) {
 	// Import ATF strings from CDLI by P-number.
-	P_Number = P_Number.replace('P', '')
+	P_Number = P_Number.replace(/[P|p]/, '')
 	var url = encodeURI(ATF_URL+P_Number+'&');
 	console.log(url);
 	return await getHTML( url )
@@ -28,9 +34,45 @@ const importCDLI = async function ( P_Number ) {
 				});
 		})
 		.catch(console.error)
+}; */
+
+const regexData = /(?:class="revcontent">)(?<version>[\s\S]+?)<br>(?<atf>[\s\S]+?)(?:<\/div>)/g
+const regexVersion = /(?<date>\d{4}-\d{2}-\d{2}) (?<time>\d{2}:\d{2}:\d{2}), entered by (?<by>.+?) for (?<for>.+?) $/
+
+const getCDLIATFbyPNumber = ( PNumber ) => {
+  //
+  let ID = PNumber.replace(/[p|P]/g,'');
+  const url = `https://cdli.ucla.edu/search/revhistory.php?txtpnumber=${ID}`;
+  return axios.get(url, { headers: { Accept: "application/json" } })
+    .then(res => {
+    let { data } = res;
+    let resultArr = [];
+    for (const m of res.data.matchAll(regexData)) {
+      let version = m.groups.version.match(regexVersion).groups;
+      let atf = decode(
+      m.groups.atf
+      .replace(/<br \/>/g, ' ')
+      .replace(/<[\/| ]*del>/g, '')
+      )+'\n';
+      resultArr.push({
+        source: 'CDLI',
+        version: version,
+        atf: atf,
+      });
+    };
+    return resultArr[0].atf;
+   });
 };
 
-const getRevisions = function ( htmlObj ) {
+const getCDLIJTFbyPNumber = ( PNumber ) => {
+  //
+  let ID = PNumber.replace(/[p|P]/g,'');
+  return ATF2JTF( getCDLIATFbyPNumber(PNumber), `P${ID}` );
+};
+
+
+
+/* const getRevisions = function ( htmlObj ) {
 	//
 	var revisions = [];
 	htmlObj.querySelectorAll('.revcontent').forEach(
@@ -58,6 +100,7 @@ const revcontent2obj = function( revcontent ){
 		for: v_for,
 		atf: str};
 	return revision;
-};
+}; */
 
-module.exports.importCDLI = importCDLI;
+module.exports.getCDLIATFbyPNumber = getCDLIATFbyPNumber;
+module.exports.getCDLIJTFbyPNumber = getCDLIJTFbyPNumber;

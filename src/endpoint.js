@@ -18,16 +18,16 @@ const runserver = ( port=3003 ) => {
         origin: '*',
         optionsSuccessStatus: 200
       }));
-    app.use('/api',routes);
-    app.get('/',(req,res)=>{ 
+    app.use('/api', routes);
+    app.get('/',(req,res)=>{
         res.json({
             'jtf-lib': "server-running"
         })
     });
 
-    //Listening on 3002
+    //Listening on port
     app.listen(port, () => {
-        console.log(`app is running on ${port}`);
+        console.log(`jtf-lib endpoint is running on ${port}`);
     });
 };
 

@@ -67,7 +67,7 @@ const getCollection = ( pNumbers ) => {
 
 const getCDLIbyPNumber = ( PNumber ) => {
   //
-  let ID = PNumber.slice(1,7);
+  let ID = PNumber.replace(/[p|P]/g,'');
   const url = `https://cdli.ucla.edu/search/revhistory.php?txtpnumber=${ID}`;
   return axios.get(url, { headers: { Accept: "application/json" } })
     .then(res => {

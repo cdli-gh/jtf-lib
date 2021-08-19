@@ -9,7 +9,7 @@ const { ATF2JTF, ATFLine2JTF, ATFChar2JTF } = require('./Converters/ATF2JTF.js')
 const { JTFChar2ATFO } = require('./Converters/JTF2ATF_O.js');
 
 /* Importers */
-const { importCDLI } = require('./Loaders/CDLILoader.js');
+const { getCDLIATFbyPNumber, getCDLIJTFbyPNumber } = require('./Loaders/CDLILoader.js');
 const { importKeiBi } = require('./Loaders/KeiBiLoader.js');
 
 /* CRUD functions */
@@ -22,7 +22,8 @@ const { Create, Read, Update, Delete, Strip } = require('./API/JTFCRUD.js');
 module.exports = {
 	JTFSchema,
 	
-	importCDLI,
+	getCDLIATFbyPNumber,
+	getCDLIJTFbyPNumber,
 	importKeiBi,
 	
 	ATF2JTF,

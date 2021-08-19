@@ -1,5 +1,10 @@
 'use strict';
 
+// ? Unused ?
+// Clean-up:
+// * Remove `request`, `request-promise`, `node-html-parser`
+//   if not used elsewere.
+
 /*---/ imports /------------------------------------------------------------*/
 const request = require('request');
 const rp = require('request-promise');
