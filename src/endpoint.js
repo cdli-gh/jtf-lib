@@ -18,7 +18,7 @@ const runserver = ( port=3003 ) => {
         origin: '*',
         optionsSuccessStatus: 200
       }));
-    app.use('/api', routes);
+    app.use('/jtf-lib/api', routes);
     app.get('/',(req,res)=>{
         res.json({
             'jtf-lib': "server-running"

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { getCDLIJTFbyPNumber, getCDLIATFbyPNumber } = require("../Loaders/CDLILoader.js");
 const { JTF2SignNames, ATF2SignNames, ATFLine2SignNames } = require("../Converters/JTF2SignNames.js");
+const { ATF2JTF } = require('../Converters/ATF2JTF.js');
 
 //Fetch ATF from CDLI (legacy website) and convert to JTF
 router.post('/getCDLIJTF',(req,res)=>{
@@ -38,6 +39,14 @@ router.post('/getSignnamesATFLINE',(req,res)=>{
 	const atf_line = req.body.atf;
 	const output = ATFLine2SignNames(atf_line);
 	res.send(output);
+});
+
+
+//ATF to Errors
+router.post('/getATFErrors',(req,res)=>{
+	const atf_line = req.body.atf;
+	const output = ATF2JTF(atf_line);
+	res.send(output.errors);
 });
 
 
