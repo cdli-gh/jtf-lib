@@ -50,4 +50,12 @@ router.post('/getATFErrors',(req,res)=>{
 });
 
 
+//ATF to JTF
+router.post('/getJTF',(req,res)=>{
+	const atf = req.body.atf;
+	const output = ATF2JTF(atf);
+	res.send(output);
+});
+
+
 module.exports = router;
