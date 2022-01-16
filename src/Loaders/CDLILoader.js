@@ -70,8 +70,6 @@ const getCDLIJTFbyPNumber = ( PNumber ) => {
   return ATF2JTF( getCDLIATFbyPNumber(PNumber), `P${ID}` );
 };
 
-
-
 /* const getRevisions = function ( htmlObj ) {
 	//
 	var revisions = [];

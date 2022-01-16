@@ -83,7 +83,7 @@ const collectionOutput = (fulfilledArr, argv) => {
     } else {
         let outputName = `${Date.now()}.jtfc`;
         console.log(`* Saving jtf collection to '${outputName}'.`);
-        fs.writeFile(`./${outputName}.jtfc`, out, saveCallback);
+        fs.writeFile(`./${outputName}`, out, saveCallback);
     };
 };
 

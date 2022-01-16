@@ -57,15 +57,16 @@ const makeFields = ( d ) => {
 main -> (main_chain | main_chain_non_linear):+ NL
 {% d => {
     d = flatAll( d );
+    //console.log(d)
     d = makeFields( d );
     return { inline: d };
 } 
 %}
 
-main_chain_non_linear -> prtO INLINE_CORE (WS INLINE_CORE):* prtCa fSep:* WS:+
-main_chain -> INLINE_CORE:? fSep:* WS:+
+main_chain_non_linear -> prtO INLINE_CORE (WS INLINE_CORE):* prtCa fSep:* WS
+main_chain -> INLINE_CORE:? fSep:* WS
 
-INLINE_CORE -> inlineComment | SEQUENCE
+INLINE_CORE -> ( inlineComment | SEQUENCE )
 
 inlineComment -> %inlineComment
 {% d => {
@@ -75,7 +76,7 @@ inlineComment -> %inlineComment
     }}
 %}
 
-SEQUENCE -> (SEQ_SHORT | SEQ_LONG | SEQ_DET)
+SEQUENCE -> (SEQ_SHORT | SEQ_LONG | SEQ_INCOMPLETE)
 {% 
 d => {
     d = flatAll(d);
@@ -83,7 +84,7 @@ d => {
 }
 %}
 
-SEQ_DET -> DET:+
+SEQ_INCOMPLETE -> D
 {% 
     d => {
         return {_class: 'sequence', type: 'incomplete', children: flatAll(d)};
@@ -97,29 +98,31 @@ SEQ_SHORT -> SIGN
     }
 %}
 
-SEQ_LONG -> (SEQ_CORE div):+ SEQ_CORE
+SEQ_LONG -> ((SEQ_CORE | SIGN) (div (SEQ_CORE | SIGN)):+ | SEQ_CORE)
 {% 
     d => {
-        return {_class: 'sequence', type: 'long', children: flatAll(d)};
+        let seq = {_class: 'sequence', type: 'long', children: flatAll(d)};
+        return seq;
     }
 %}
 
-SEQ_CORE -> SEQ_GLOSS | SEQ_DET | SIGN
+SEQ_CORE -> SEQ_GLOSS | SEQ_DET
 
 SEQ_GLOSS -> SG_S | S_GS | GS | SG
 
-GS -> GLOSS (SIGN | SEQ_DET )
-SG -> (SIGN | SEQ_DET ) GLOSS
+GS -> GLOSS ( SIGN | SEQ_DET )
+SG -> ( SIGN | SEQ_DET ) GLOSS
 SG_S -> GS div SIGN
-S_GS -> (SIGN | SEQ_DET ) div GS
+S_GS -> ( SIGN | SEQ_DET ) div GS
 
 SEQ_DET -> SD_S | S_DS | DS | SD | SDS
 
-DS -> DET:+ SIGN
-SD -> SIGN DET:+
-SDS -> DET:+ SIGN DET:+
+SDS -> D SIGN D
+DS -> D SIGN
+SD -> SIGN D
 SD_S -> SD div SIGN
 S_DS -> SIGN div DS
+D -> DET:+
 
 SIGN -> SIGN_PRE:? SIGN_CORE SIGN_POST:?
 
@@ -138,9 +141,9 @@ POST_BRC -> (brkC | lingGlC | DocGlC | PrsExcC | ElpC | PrsMisC):+
 # * undefined logograms (such as %xL_s / %xL_l)
 # * logogram with known type & uncert. / unkn. reading (such as CL & CL_CDLI)
 
-DET -> SIGN_PRE:? detO DET_CHAIN gdC SIGN_POST:?
+DET -> SIGN_PRE:? detO ( DET_SIGN | DET_CHAIN ) gdC SIGN_POST:?
 
-DET_CHAIN -> DET_SIGN (div DET_SIGN):*
+DET_CHAIN -> DET_SIGN (div DET_SIGN):+
 
 DET_SIGN -> SIGN_PRE:? SIGN_CORE SIGN_POST:?
 {%

@@ -139,6 +139,7 @@ var grammar = {
     {"name": "main$ebnf$1", "symbols": ["main$ebnf$1", "main$ebnf$1$subexpression$2"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "main", "symbols": ["main$ebnf$1", "NL"], "postprocess":  d => {
             d = flatAll( d );
+            //console.log(d)
             d = makeFields( d );
             return { inline: d };
         } 
@@ -148,18 +149,15 @@ var grammar = {
     {"name": "main_chain_non_linear$ebnf$1", "symbols": ["main_chain_non_linear$ebnf$1", "main_chain_non_linear$ebnf$1$subexpression$1"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "main_chain_non_linear$ebnf$2", "symbols": []},
     {"name": "main_chain_non_linear$ebnf$2", "symbols": ["main_chain_non_linear$ebnf$2", "fSep"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "main_chain_non_linear$ebnf$3", "symbols": ["WS"]},
-    {"name": "main_chain_non_linear$ebnf$3", "symbols": ["main_chain_non_linear$ebnf$3", "WS"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "main_chain_non_linear", "symbols": ["prtO", "INLINE_CORE", "main_chain_non_linear$ebnf$1", "prtCa", "main_chain_non_linear$ebnf$2", "main_chain_non_linear$ebnf$3"]},
+    {"name": "main_chain_non_linear", "symbols": ["prtO", "INLINE_CORE", "main_chain_non_linear$ebnf$1", "prtCa", "main_chain_non_linear$ebnf$2", "WS"]},
     {"name": "main_chain$ebnf$1", "symbols": ["INLINE_CORE"], "postprocess": id},
     {"name": "main_chain$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "main_chain$ebnf$2", "symbols": []},
     {"name": "main_chain$ebnf$2", "symbols": ["main_chain$ebnf$2", "fSep"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "main_chain$ebnf$3", "symbols": ["WS"]},
-    {"name": "main_chain$ebnf$3", "symbols": ["main_chain$ebnf$3", "WS"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "main_chain", "symbols": ["main_chain$ebnf$1", "main_chain$ebnf$2", "main_chain$ebnf$3"]},
-    {"name": "INLINE_CORE", "symbols": ["inlineComment"]},
-    {"name": "INLINE_CORE", "symbols": ["SEQUENCE"]},
+    {"name": "main_chain", "symbols": ["main_chain$ebnf$1", "main_chain$ebnf$2", "WS"]},
+    {"name": "INLINE_CORE$subexpression$1", "symbols": ["inlineComment"]},
+    {"name": "INLINE_CORE$subexpression$1", "symbols": ["SEQUENCE"]},
+    {"name": "INLINE_CORE", "symbols": ["INLINE_CORE$subexpression$1"]},
     {"name": "inlineComment", "symbols": [(lexer.has("inlineComment") ? {type: "inlineComment"} : inlineComment)], "postprocess":  d => {
         return { 
         _class: 'inlineComment',
@@ -168,16 +166,14 @@ var grammar = {
         },
     {"name": "SEQUENCE$subexpression$1", "symbols": ["SEQ_SHORT"]},
     {"name": "SEQUENCE$subexpression$1", "symbols": ["SEQ_LONG"]},
-    {"name": "SEQUENCE$subexpression$1", "symbols": ["SEQ_DET"]},
+    {"name": "SEQUENCE$subexpression$1", "symbols": ["SEQ_INCOMPLETE"]},
     {"name": "SEQUENCE", "symbols": ["SEQUENCE$subexpression$1"], "postprocess":  
         d => {
             d = flatAll(d);
             return d;
         }
         },
-    {"name": "SEQ_DET$ebnf$1", "symbols": ["DET"]},
-    {"name": "SEQ_DET$ebnf$1", "symbols": ["SEQ_DET$ebnf$1", "DET"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "SEQ_DET", "symbols": ["SEQ_DET$ebnf$1"], "postprocess":  
+    {"name": "SEQ_INCOMPLETE", "symbols": ["D"], "postprocess":  
         d => {
             return {_class: 'sequence', type: 'incomplete', children: flatAll(d)};
         }
@@ -187,18 +183,26 @@ var grammar = {
             return {_class: 'sequence', type: 'short', children: flatAll(d)};
         }
         },
-    {"name": "SEQ_LONG$ebnf$1$subexpression$1", "symbols": ["SEQ_CORE", "div"]},
-    {"name": "SEQ_LONG$ebnf$1", "symbols": ["SEQ_LONG$ebnf$1$subexpression$1"]},
-    {"name": "SEQ_LONG$ebnf$1$subexpression$2", "symbols": ["SEQ_CORE", "div"]},
-    {"name": "SEQ_LONG$ebnf$1", "symbols": ["SEQ_LONG$ebnf$1", "SEQ_LONG$ebnf$1$subexpression$2"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "SEQ_LONG", "symbols": ["SEQ_LONG$ebnf$1", "SEQ_CORE"], "postprocess":  
+    {"name": "SEQ_LONG$subexpression$1$subexpression$1", "symbols": ["SEQ_CORE"]},
+    {"name": "SEQ_LONG$subexpression$1$subexpression$1", "symbols": ["SIGN"]},
+    {"name": "SEQ_LONG$subexpression$1$ebnf$1$subexpression$1$subexpression$1", "symbols": ["SEQ_CORE"]},
+    {"name": "SEQ_LONG$subexpression$1$ebnf$1$subexpression$1$subexpression$1", "symbols": ["SIGN"]},
+    {"name": "SEQ_LONG$subexpression$1$ebnf$1$subexpression$1", "symbols": ["div", "SEQ_LONG$subexpression$1$ebnf$1$subexpression$1$subexpression$1"]},
+    {"name": "SEQ_LONG$subexpression$1$ebnf$1", "symbols": ["SEQ_LONG$subexpression$1$ebnf$1$subexpression$1"]},
+    {"name": "SEQ_LONG$subexpression$1$ebnf$1$subexpression$2$subexpression$1", "symbols": ["SEQ_CORE"]},
+    {"name": "SEQ_LONG$subexpression$1$ebnf$1$subexpression$2$subexpression$1", "symbols": ["SIGN"]},
+    {"name": "SEQ_LONG$subexpression$1$ebnf$1$subexpression$2", "symbols": ["div", "SEQ_LONG$subexpression$1$ebnf$1$subexpression$2$subexpression$1"]},
+    {"name": "SEQ_LONG$subexpression$1$ebnf$1", "symbols": ["SEQ_LONG$subexpression$1$ebnf$1", "SEQ_LONG$subexpression$1$ebnf$1$subexpression$2"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "SEQ_LONG$subexpression$1", "symbols": ["SEQ_LONG$subexpression$1$subexpression$1", "SEQ_LONG$subexpression$1$ebnf$1"]},
+    {"name": "SEQ_LONG$subexpression$1", "symbols": ["SEQ_CORE"]},
+    {"name": "SEQ_LONG", "symbols": ["SEQ_LONG$subexpression$1"], "postprocess":  
         d => {
-            return {_class: 'sequence', type: 'long', children: flatAll(d)};
+            let seq = {_class: 'sequence', type: 'long', children: flatAll(d)};
+            return seq;
         }
         },
     {"name": "SEQ_CORE", "symbols": ["SEQ_GLOSS"]},
     {"name": "SEQ_CORE", "symbols": ["SEQ_DET"]},
-    {"name": "SEQ_CORE", "symbols": ["SIGN"]},
     {"name": "SEQ_GLOSS", "symbols": ["SG_S"]},
     {"name": "SEQ_GLOSS", "symbols": ["S_GS"]},
     {"name": "SEQ_GLOSS", "symbols": ["GS"]},
@@ -218,19 +222,14 @@ var grammar = {
     {"name": "SEQ_DET", "symbols": ["DS"]},
     {"name": "SEQ_DET", "symbols": ["SD"]},
     {"name": "SEQ_DET", "symbols": ["SDS"]},
-    {"name": "DS$ebnf$1", "symbols": ["DET"]},
-    {"name": "DS$ebnf$1", "symbols": ["DS$ebnf$1", "DET"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "DS", "symbols": ["DS$ebnf$1", "SIGN"]},
-    {"name": "SD$ebnf$1", "symbols": ["DET"]},
-    {"name": "SD$ebnf$1", "symbols": ["SD$ebnf$1", "DET"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "SD", "symbols": ["SIGN", "SD$ebnf$1"]},
-    {"name": "SDS$ebnf$1", "symbols": ["DET"]},
-    {"name": "SDS$ebnf$1", "symbols": ["SDS$ebnf$1", "DET"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "SDS$ebnf$2", "symbols": ["DET"]},
-    {"name": "SDS$ebnf$2", "symbols": ["SDS$ebnf$2", "DET"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "SDS", "symbols": ["SDS$ebnf$1", "SIGN", "SDS$ebnf$2"]},
+    {"name": "SDS", "symbols": ["D", "SIGN", "D"]},
+    {"name": "DS", "symbols": ["D", "SIGN"]},
+    {"name": "SD", "symbols": ["SIGN", "D"]},
     {"name": "SD_S", "symbols": ["SD", "div", "SIGN"]},
     {"name": "S_DS", "symbols": ["SIGN", "div", "DS"]},
+    {"name": "D$ebnf$1", "symbols": ["DET"]},
+    {"name": "D$ebnf$1", "symbols": ["D$ebnf$1", "DET"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "D", "symbols": ["D$ebnf$1"]},
     {"name": "SIGN$ebnf$1", "symbols": ["SIGN_PRE"], "postprocess": id},
     {"name": "SIGN$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "SIGN$ebnf$2", "symbols": ["SIGN_POST"], "postprocess": id},
@@ -278,12 +277,15 @@ var grammar = {
     {"name": "POST_BRC", "symbols": ["POST_BRC$ebnf$1"]},
     {"name": "DET$ebnf$1", "symbols": ["SIGN_PRE"], "postprocess": id},
     {"name": "DET$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "DET$subexpression$1", "symbols": ["DET_SIGN"]},
+    {"name": "DET$subexpression$1", "symbols": ["DET_CHAIN"]},
     {"name": "DET$ebnf$2", "symbols": ["SIGN_POST"], "postprocess": id},
     {"name": "DET$ebnf$2", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "DET", "symbols": ["DET$ebnf$1", "detO", "DET_CHAIN", "gdC", "DET$ebnf$2"]},
-    {"name": "DET_CHAIN$ebnf$1", "symbols": []},
+    {"name": "DET", "symbols": ["DET$ebnf$1", "detO", "DET$subexpression$1", "gdC", "DET$ebnf$2"]},
     {"name": "DET_CHAIN$ebnf$1$subexpression$1", "symbols": ["div", "DET_SIGN"]},
-    {"name": "DET_CHAIN$ebnf$1", "symbols": ["DET_CHAIN$ebnf$1", "DET_CHAIN$ebnf$1$subexpression$1"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "DET_CHAIN$ebnf$1", "symbols": ["DET_CHAIN$ebnf$1$subexpression$1"]},
+    {"name": "DET_CHAIN$ebnf$1$subexpression$2", "symbols": ["div", "DET_SIGN"]},
+    {"name": "DET_CHAIN$ebnf$1", "symbols": ["DET_CHAIN$ebnf$1", "DET_CHAIN$ebnf$1$subexpression$2"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "DET_CHAIN", "symbols": ["DET_SIGN", "DET_CHAIN$ebnf$1"]},
     {"name": "DET_SIGN$ebnf$1", "symbols": ["SIGN_PRE"], "postprocess": id},
     {"name": "DET_SIGN$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
