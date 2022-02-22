@@ -108,7 +108,7 @@ const processError = function( error, p_name ){
 const nearlyError2Object = function(error, p_name){
 	//
 	let [keys, trees, err_lines] = nearlyErrorAnalyze(error);
-	let match = error.match(re_invalid_syntax);
+	let match = error.match(re_syntax_error);
 	let matchToken = error.match(re_error_token_data);
 	console.log('!!!!!!!!', error, match)
 	let err_obj = {
