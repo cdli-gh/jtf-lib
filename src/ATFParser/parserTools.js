@@ -108,9 +108,16 @@ const processError = function( error, p_name ){
 const nearlyError2Object = function(error, p_name){
 	//
 	let [keys, trees, err_lines] = nearlyErrorAnalyze(error);
-	let match = error.match(re_syntax_error);
+        // Will match if the error is a lexer (Moo)
+        // error.
+        // Otherwise, match on a Nearley error using
+        // alternate regex.
+        let match = error.match(re_syntax_error);
+        if(!match){
+            match = error.match(re_invalid_syntax);
+        }
 	let matchToken = error.match(re_error_token_data);
-	console.log('!!!!!!!!', error, match)
+        console.log('!!!!!!!!', error, match);
 	let err_obj = {
 		text: error,
 		agent: 'ATF '+p_name,
