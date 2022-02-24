@@ -1,5 +1,13 @@
 const nearley = require("nearley");
 
+/*---/ Regex Patterns /-------------------------------------------------------*/
+// Regex for extracting error information from Nearley Syntax errors
+const RE_PARSER_SYNTAX_ERROR = /Syntax error at line (\d+) col (\d+):\n\n[ ]{2}(.*)\n.+/;
+// Regex for extracting error information from Moo lexer errors
+const RE_LEXER_SYNTAX_ERROR = /invalid syntax at line (\d+) col (\d+):\n\n[ ]{2}(.+)\n.+/;
+const RE_TOKEN_DATA_ERROR = /.*Unexpected ([^ ]+) token: "([^"]+)".*/;
+
+
 /*---/ Parser /--------------------------------------------------------------*/
 
 const parse = function( parserClass, p_name, data, reference='', ambigLog=true ) {
@@ -74,10 +82,6 @@ const checkResponseQuantity = function(
 
 /*---/ Error processing /---------------------------------------------------*/
 
-var re_syntax_error = /invalid syntax at line (\d+) col (\d+):\n\n[ ]{2}(.+)\n.+/;
-var re_invalid_syntax = /Syntax error at line (\d+) col (\d+):\n\n[ ]{2}(.*)\n.+/;
-var re_error_token_data = /.*Unexpected ([^ ]+) token: "([^"]+)".*/
-
 const processError = function( error, p_name ){
 	// Parse error message.
 	//console.log('ATF '+p_name+' Parser ERROR:');
@@ -87,10 +91,10 @@ const processError = function( error, p_name ){
 		return error;
 	};
 	let { message } = error;
-	if (message.includes('Instead, I was expecting')){
+        if (message.match(RE_PARSER_SYNTAX_ERROR)){
 		return nearlyError2Object(message, p_name);
-	} else if (message.match(re_syntax_error)){
-		let match = message.match(re_syntax_error);
+	} else if (message.match(RE_LEXER_SYNTAX_ERROR)){
+		let match = message.match(RE_LEXER_SYNTAX_ERROR);
 		let err_obj = {
 			agent: 'ATF '+p_name,
 			type: 'syntax',
@@ -112,11 +116,8 @@ const nearlyError2Object = function(error, p_name){
         // error.
         // Otherwise, match on a Nearley error using
         // alternate regex.
-        let match = error.match(re_syntax_error);
-        if(!match){
-            match = error.match(re_invalid_syntax);
-        }
-	let matchToken = error.match(re_error_token_data);
+        let match = error.match(RE_PARSER_SYNTAX_ERROR);
+	let matchToken = error.match(RE_TOKEN_DATA_ERROR);
         console.log('!!!!!!!!', error, match);
 	let err_obj = {
 		text: error,
