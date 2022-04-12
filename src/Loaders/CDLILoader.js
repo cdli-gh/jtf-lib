@@ -15,8 +15,7 @@ const ATF_URL = 'https://cdli.ucla.edu/search/revhistory.php/?txtpnumber=';
 /*---/ methods /------------------------------------------------------------*/
 
 // Clean-up:
-// * Remove `request`, `request-promise`, `node-html-parser`
-//   if not used elsewere.
+// * Remove `node-html-parser` if not used elsewere.
 
 /* const importCDLI = async function ( P_Number ) {
 	// Import ATF strings from CDLI by P-number.
