@@ -76,31 +76,8 @@ const types = [
 // - (pseudo)akkadogram
 // - abbreviation
 
-const states = ['text', 'gloss', 'structure']
+const states = ['text', 'gloss', 'structure'];
 
-/*
-function reORJoin(array){
-  //return array.join("|").replace('\|', '|'); 
-  return escapeRegExp(array.join("|")).replace('\|', '|');
-};
-
-const atf = ['{', '}', '(', ')', '#', '!', '?'];
-//const r_atf = escapeRegExp(vowels.join("|")).replace('\|', '|');
-
-const r_v = reORJoin(vowels); 
-const r_c = reORJoin(consonants);
-const r_syl = "["+r_c+"]?["+r_v+"]["+r_c+"]?";
-const r_value = "(?<value>("+r_syl+")+)";
-const r_index = "(?<index>([1-9][0-9]*)*)";
-const r_brc = "(?<brc>\(.+\))";
-const r_curly = "(?<curly>\{.+\})";
-const r_vert = "(?<vert>\|.+\|)";
-const re_sign = new RegExp('^'+r_value+r_index+'$', "i");
-const re_sep = new RegExp('['+reORJoin(separators)+']');
-const re_brc = new RegExp(r_brc);
-const re_curly = new RegExp(r_curly);
-const re_vert = new RegExp(r_vert);
-*/
 
 const TLTChar = {
   //'modes': ['edit', 'hint', 'ready', 'incorrect'],
@@ -124,43 +101,6 @@ function copy(src) {
   return Object.assign({}, src);
 }
 
-/*
-function parseATFChar(inputValue){
-  
-  // Parse inputValue string to fields.
-  // Update component's state variables.
-  // Params:
-  //   value: V VC CV CVC+ & exceptions
-  //   index: number or none
-  
-  var dict = copy(TLTChar);
-  dict['inputValue'] = inputValue;
-  if (re_sign.test(inputValue)) {
-    var matches = re_sign.exec(inputValue);
-    var value = matches.groups.value.toLowerCase();
-    var index = matches.groups.index;
-    if (index=='1') {
-      index = '';
-    };
-    console.log(value, index)
-  } else {
-    console.log('invalid sign syntax');
-    console.log(value, index);
-    var lst = [re_brc, re_curly, re_vert]; 
-    lst.forEach(function(r) {
-      console.log(
-        inputValue, 
-        r, 
-        r.test(inputValue), 
-        r.exec(inputValue));
-    });
-    return dict;
-  };
-  dict['value'] = value; 
-  dict['index'] = index;
-  return dict;
-};
-*/
 
 /* Replace aliases (see lists above) */
 function replace_aliases(inputValue) {
@@ -170,9 +110,9 @@ function replace_aliases(inputValue) {
   var len = inputValue.length
   if (index_x.includes(inputValue[len-1])){ //handle x values
     if (len > 1 && inputValue.replace(/X|x|ₓ/, '').length > 0) {
-      inputValue = inputValue.replace(/X|x/, 'ₓ')
+        inputValue = inputValue.replace(/X|x/, 'ₓ');
     } else {
-      return 'X'
+        return 'X';
     };
   };
   while (i < aliases.length) { 

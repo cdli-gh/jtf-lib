@@ -8,8 +8,7 @@ const ARCH_URL = 'https://cdli.ucla.edu/search/archival_view.php?ObjectID=P';
 const CAT_URL = 'https://cdli.ucla.edu/search/search_results.php?ObjectID=P';
 
 const importMeta = async function ( P_Number ) {
-	//
-	P_Number = P_Number.replace('P', '')
+	P_Number = P_Number.replace('P', '');
 	var url = encodeURI(ARCH_URL+P_Number);
 	var imgs = await getImages( P_Number );
 	return await getHTML( url )
@@ -17,7 +16,7 @@ const importMeta = async function ( P_Number ) {
 			var meta = getMeta( htmlObj );
 			meta.images = imgs;
 			return meta;
-		})
+		});
 };
 
 const getMeta = function ( htmlObj ) {
@@ -29,7 +28,7 @@ const getMeta = function ( htmlObj ) {
 		table.querySelectorAll('tr').forEach(row => {
 			if (row.querySelectorAll('td').length===2){
 				var [txt, value] = row.querySelectorAll('td')
-					.map( x => { return x.rawText })
+					.map( x => { return x.rawText });
 				var key = str2key(txt);
 				value = value.replace(/\r|\n/g, '');
 				value = value.replace(/^[ ]*|[ ]*$/g, '');
@@ -53,7 +52,7 @@ const getImages = async function( P_Number ) {
 		var imgArr = htmlObj.querySelectorAll('td a')
 			.map(x => {return x.attributes.href})
 			.filter(x => x)
-			.filter(x => x.includes('/dl/') || x.includes('rti/rti'))
+			.filter(x => x.includes('/dl/') || x.includes('rti/rti'));
 		return imgArr;
 	});
 };

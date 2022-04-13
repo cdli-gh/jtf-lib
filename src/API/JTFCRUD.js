@@ -29,12 +29,11 @@ const Strip = function(JTFElement){
 	};
 	if (JTFElement.objects){
 		if (!JTFElement.success){ return; }
-		JTFElement.objects = JTFElement.objects.map( o => Strip(o) )
+		JTFElement.objects = JTFElement.objects.map( o => Strip(o) );
 		return JTFElement;
 	};
 	let template = F.templates[JTFElement._class];
-	let JTFStripped = {_class: JTFElement._class}
-	//console.log('stripping', JTFElement, template )
+	let JTFStripped = {_class: JTFElement._class};
 	Object.keys(template).forEach(key => {
 		if (['_props_basic', '_props_optional'].includes(key)) {
 			template[key].forEach(field => {
@@ -43,14 +42,13 @@ const Strip = function(JTFElement){
 					? JTFElement[field].map( el => Strip(el) ) 
 					: JTFElement[field];
 				};
-			})
+			});
 		}
 	});
 	return JTFStripped;
 };
 
 const Create = function(JTFClass='Object', {container, index, params}={}){
-	//
 	if (!Object.keys(F.templates).includes(JTFClass)){
 		error = {
 			agent: 'JTFCRUD',
@@ -58,16 +56,16 @@ const Create = function(JTFClass='Object', {container, index, params}={}){
 			text: `JTFCRUD create Error: Unknown class "${JTFClass}"`,
 			action: 'skipped'
 		};
-		console.log(error.text)
+		console.log(error.text);
 		if (container){
-			return F.pushWarningUp(error, container)
+			return F.pushWarningUp(error, container);
 		};
 		return error;
 	};
 	let JTFElement = ElementFromTemplate(JTFClass);
 	if (container){
 		if (index){
-			container.children.splice(index, 0, JTFElement)
+			container.children.splice(index, 0, JTFElement);
 		} else {
 			container.children.push(JTFElement);
 		};
@@ -77,18 +75,14 @@ const Create = function(JTFClass='Object', {container, index, params}={}){
 };
 
 const Read = function(JTFElement){
-	//
 	return JTFElement;
 };
 
 const Update = function(JTFElement, params){
-	//
 	
 };
 
-const Delete = function(JTFElement){
-	//
-	
+const Delete = function(JTFElement){	
 };
 
 exports.Strip = Strip;

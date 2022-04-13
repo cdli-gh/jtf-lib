@@ -2,7 +2,7 @@
 
 /* Use moo */
 // https://github.com/no-context/moo
-const moo = require('moo')
+const moo = require('moo');
 
 /* Example: */ 
 // const moo = require('moo')
