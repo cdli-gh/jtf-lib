@@ -3,7 +3,7 @@ Functions to turn ATF and JTF into sign name "normalization" string.
 */
 const { JSONPath } = require('jsonpath-plus');
 const SL = require('jtf-signlist/index');
-const { ATF2JTF, ATFLine2JTF } = require('./ATF2JTF.js')
+const { ATF2JTF, ATFLine2JTF } = require('./ATF2JTF.js');
 
 const chr2ATF = ( Chr ) => {
     // Basic jtf chr to ATF converter.

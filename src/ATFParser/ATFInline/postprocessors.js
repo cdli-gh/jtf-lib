@@ -14,10 +14,10 @@ const flatAll = function( array ) {
 				new_array = new_array.concat( x );
 			};
 		} else if (x) { //this filters out null etc.
-			new_array.push( x )
+			new_array.push( x );
 		};
 	}, array);
-	return new_array
+	return new_array;
 };
 
 //===/ sign structure scripts /===============================================
@@ -35,7 +35,7 @@ const escapeSNum = function( num_str ) {
 		} else if ( num.includes(n) ) {
 			new_num.push(n);
 		}
-	})
+	});
 	return new_num.join('');
 };
 

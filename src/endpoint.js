@@ -12,7 +12,7 @@ const runserver = ( port=3003 ) => {
     const routes = require("./routes/routes.js"); 
     
     //MiddleWares
-    app.use(bodyParser.json())
+    app.use(bodyParser.json());
     app.use(cookieparser());
     app.use(cors({
         origin: '*',
@@ -22,7 +22,7 @@ const runserver = ( port=3003 ) => {
     app.get('/',(req,res)=>{
         res.json({
             'jtf-lib': "server-running"
-        })
+        });
     });
 
     //Listening on port

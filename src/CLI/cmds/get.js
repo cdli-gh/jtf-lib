@@ -76,10 +76,6 @@ const collectionOutput = (fulfilledArr, argv) => {
     if (argv.pipe){
         console.log('* Serving jtf collection');
         serve( out );
-        //console.log(`* Writing collection to stdout.`);
-        //process.stdout.write(out);
-        //var buffer = Buffer.alloc(Buffer.byteLength(out));
-        //buffer.write(out);
     } else {
         let outputName = `${Date.now()}.jtfc`;
         console.log(`* Saving jtf collection to '${outputName}'.`);

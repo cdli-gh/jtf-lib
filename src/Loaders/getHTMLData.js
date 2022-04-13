@@ -5,7 +5,7 @@
 // * Remove `node-html-parser` if not used elsewere.
 
 /*---/ imports /------------------------------------------------------------*/
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 const parseHTML = require('node-html-parser').parse;
 
 const getHTML = async function( url ){

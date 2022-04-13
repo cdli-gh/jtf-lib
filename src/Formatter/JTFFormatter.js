@@ -47,11 +47,6 @@ const JTFFormatter = function( JTFobj, i=0, parentID=null ){
 };
 
 const handleUndefinedClass = function(JTFobj){
-  //
-/*   console.log(
-    'JTF formatter WARNING: skipped object with undefined _class\n',
-    JTFobj
-  ); */
   pushWarning({
     agent: 'JTFFormatter',
     type: 'Unknown JTF _class',
@@ -89,7 +84,7 @@ const containerProps = [
 ];
 
 const contentProps = [
-  //'parent', //replace with parent element id for JTFCRUD.Strip(  )
+
 ];
 
 const dataObject = {
@@ -100,52 +95,45 @@ const dataObject = {
 const dataSurface = {
   '_class': 'surface',
   '_props_basic': containerProps,
-  //'_props_secondary': contentProps,
 };
 
 const dataColumn = {
   '_class': 'column',
   '_props_basic': containerProps,
-  //'_props_secondary': contentProps,
 };
 
 const dataQLink = {
   // ToDo: add line ref.
   '_class': 'qLink',
   '_props_basic': ['id', 'type', 'QNumber', 'QLine'],
-  //'_props_secondary': [],
 };
 
 const dataTransl = {
   // ToDo: add line ref.
   '_class': 'transl',
   '_props_basic': ['id', 'type', 'lang', 'value'],
-  //'_props_secondary': [],
 };
 
 const dataLine = {
   '_class': 'line',
   '_props_basic': containerProps,
   '_props_optional': ['id', 'QLink', 'link'],
-  //'_props_secondary': contentProps,
 };
 
 const dataRuling = {
   '_class': 'ruling',
   '_props_basic': ['id', 'type', 'name'],
-  //'_props_secondary': contentProps,
 };
 
 const dataState = {
   '_class': 'state',
   '_props_basic': ['id', 'type', 'extent', 'qualification', 'scope', 'state', 'lacuna'],
-  //'_props_secondary': contentProps,
 };
 
 const dataSequence = {
   '_class': 'sequence',
   '_props_basic': containerProps,
-  //'_props_secondary': contentProps,
+
 };
 
 const dataChr = {
@@ -315,7 +303,7 @@ const formatChr = function( Chr, separator=null ){
     Chr[fieldName] = formatChr(Chr[fieldName])
   }});
   if (Chr.type==='det'){
-    ChrATF = `{${Chr.value}${(Chr.index>1) ? Chr.index : ''}}`
+      ChrATF = `{${Chr.value}${(Chr.index>1) ? Chr.index : ''}}`;
     let ChrEntries = SL.findArticlesByATF(ChrATF).values().next().value;
     Chr.position = (ChrEntries) ? ChrEntries.vDict.position : 'pre';
   };
