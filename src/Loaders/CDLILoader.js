@@ -6,7 +6,7 @@
 const ATF2JTF = require('../Converters/ATF2JTF.js').ATF2JTF;
 //const getHTML = require('./getHTMLData.js').getHTML;
 //const importMetaCDLI = require('./CDLIMetaLoader.js').importMeta;
-const axios = require("axios");
+const fetch = require('node-fetch');
 const decode = require('html-entities').decode;
 
 /*---/ globals /------------------------------------------------------------*/
@@ -24,11 +24,11 @@ const getCDLIATFbyPNumber = ( PNumber ) => {
   //
   let ID = PNumber.replace(/[p|P]/g,'');
   const url = `https://cdli.ucla.edu/search/revhistory.php?txtpnumber=${ID}`;
-  return axios.get(url, { headers: { Accept: "application/json" } })
+  return fetch(url, { headers: { Accept: "application/json" } })
+    .then(res => res.text)
     .then(res => {
-    let { data } = res;
     let resultArr = [];
-    for (const m of res.data.matchAll(regexData)) {
+    for (const m of res.matchAll(regexData)) {
       let version = m.groups.version.match(regexVersion).groups;
       let atf = decode(
       m.groups.atf
