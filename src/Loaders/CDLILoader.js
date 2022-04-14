@@ -1,11 +1,7 @@
 'use strict';
 
 /*---/ imports /------------------------------------------------------------*/
-//const fs = require('fs');
-//var he = require('he'); //html entities
 const ATF2JTF = require('../Converters/ATF2JTF.js').ATF2JTF;
-//const getHTML = require('./getHTMLData.js').getHTML;
-//const importMetaCDLI = require('./CDLIMetaLoader.js').importMeta;
 const fetch = require('node-fetch');
 const decode = require('html-entities').decode;
 
