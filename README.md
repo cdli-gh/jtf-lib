@@ -56,4 +56,4 @@ Command line:
 --> 
 
 ### About
-By Ilya Khait. Published under the [MIT Licence](https://opensource.org/licenses/MIT).
+By Ilya Khait and other contributors. Published under the [MIT Licence](https://opensource.org/licenses/MIT).
