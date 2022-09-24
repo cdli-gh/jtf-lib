@@ -1,5 +1,5 @@
 # stable version of node 
-FROM node:14
+FROM node:18
 
 # shift the working directory to /var/app/
 WORKDIR /var/app
