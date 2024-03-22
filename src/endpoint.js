@@ -12,7 +12,7 @@ const runserver = ( port=3003 ) => {
     const routes = require("./routes/routes.js"); 
     
     //MiddleWares
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({limit:'500kb'}));
     app.use(cookieparser());
     app.use(cors({
         origin: '*',
