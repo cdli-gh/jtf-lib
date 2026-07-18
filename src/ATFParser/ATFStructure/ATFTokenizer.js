@@ -134,6 +134,7 @@ const lexerData = {
 			'case',
 			'cases',
 			'surface',
+			'space'
 		],
 		state: [
 			'blank', 
