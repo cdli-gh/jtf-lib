@@ -1,4 +1,4 @@
-// Generated automatically by nearley, version 2.19.0
+// Generated automatically by nearley, version 2.20.1
 // http://github.com/Hardmath123/nearley
 (function () {
 function id(x) { return x[0]; }
@@ -29,11 +29,7 @@ const flatAll = function( array ) {
 
 const ATFTextP = require('../ATFInline/ATFtextGrammar.js');
 const { parse } = require('../parserTools.js');
-
-// Define globals here:
-let meta = {};
-let errors = [];
-let warnings = [];
+const { structureParseState, uniqueMessages, messagesOfTheUnknownLanguageSwitchCodes } = require('./ATFStructureParseState.js');
 
 
 const rulingTypeDict = {single: 1, double: 2, triple: 3};
@@ -57,21 +53,17 @@ var grammar = {
         	inter = flatAll(inter);
         	after = flatAll(after);
         	// ToDo: add `start` and `after` as meta instead.
-        	response = { 
-        		meta: meta,
+        	let errors = uniqueMessages(structureParseState.errors);
+        	let warnings = uniqueMessages(structureParseState.warnings);
+        	let response = {
+        		meta: structureParseState.meta,
         		objects: (Array.isArray(inter)) ? inter : [inter],
         		start: start,
         		after: after,
         		...(errors.length>0)&&{errors: errors},
         		...(warnings.length>0)&&{warnings: warnings},
         	};
-        	// IMPORTANT!
-        	// Reset globals:
-        	// console.log( 'before globals reset', {globals: [meta, errors, warnings], resopnse: response} )
-        	meta = {};
-        	errors = [];
-        	warnings = [];
-        	
+        
         	return response;
         }
         },
@@ -166,8 +158,8 @@ var grammar = {
     {"name": "children_text", "symbols": ["children_text$subexpression$1", "NL"]},
     {"name": "ampStatement", "symbols": [(lexer.has("AMP") ? {type: "AMP"} : AMP), (lexer.has("p_number") ? {type: "p_number"} : p_number), (lexer.has("equals") ? {type: "equals"} : equals), "endtext"], "postprocess":  
         ([,p_number,,name]) => { 
-        meta.name = name;
-        meta.p_number = p_number.value;
+        structureParseState.meta.name = name;
+        structureParseState.meta.p_number = p_number.value;
         return {
         	_class: 'ampStatement',
         	p_number: p_number.value,
@@ -219,12 +211,14 @@ var grammar = {
         	}
         }},
     {"name": "link", "symbols": [(lexer.has("LINK") ? {type: "LINK"} : LINK), "endtext"], "postprocess": 
-        d => {
+        (d, location, reject) => {
         	let content = d[0].value+d[1];
         	let QNumber, QLine = null;
         	if ( content ){
         		[QNumber, QLine] = content.split(' ');
-        		QNumber = QNumber.match(/Q[\d]{6}/g)[0]
+        		let QNumberMatch = QNumber.match(/Q[\d]{6}/g);
+        		if (!QNumberMatch) { return reject };
+        		QNumber = QNumberMatch[0]
         	};
         	return {
         		_class: 'QLink',
@@ -375,17 +369,25 @@ var grammar = {
         	let inline = data.inline;
         	let children = (inline) ? inline : [];
         	if (data.errors.length>0){ 
-        		errors = [
-        			...errors, 
-        			...data.errors.map( e => {e.line = toLine; return e}  )
+        		structureParseState.errors = [
+        			...structureParseState.errors,
+        			...data.errors.map( e => {
+        				e.line = toLine;
+        				if (Number.isInteger(e.column)) { e.column = e.column + name.length };
+        				return e;
+        			})
         		]
         	}
-        	if (data.warnings.length>0){ 
-        		warnings = [
-        			...warnings, 
+        	if (data.warnings.length>0){
+        		structureParseState.warnings = [
+        			...structureParseState.warnings,
         			...data.warnings.map( w => {w.line = toLine; return w} )
         		]
         	}
+        	structureParseState.errors = [
+        		...structureParseState.errors,
+        		...messagesOfTheUnknownLanguageSwitchCodes( inlineStr, toLine, name.length+1 ),
+        	];
         	name = name.replace(/\.[ |\t]+/, '') //remove '.' space / tab
         	return {
         		_class: 'line',

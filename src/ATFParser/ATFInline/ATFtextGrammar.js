@@ -1,4 +1,4 @@
-// Generated automatically by nearley, version 2.19.0
+// Generated automatically by nearley, version 2.20.1
 // http://github.com/Hardmath123/nearley
 (function () {
 function id(x) { return x[0]; }
@@ -59,7 +59,7 @@ const add2Sign = ( chr, d ) => {
             if (el.children.includes('!')){ chr.exclamation = true };
             if (el.children.includes('?')){ chr.question = true };
         } else if (el.reference){
-            if (chr.type.includes('num')) {
+            if (chr.type && chr.type.includes('num')) {
                 chr.unit = el.reference;
                 if (chr.unit.type && !chr.unit.type.match(/sListRef|GDL/g)) {
                   chr.unit.type = 'log'
@@ -133,16 +133,18 @@ var grammar = {
     ParserRules: [
     {"name": "main$ebnf$1$subexpression$1", "symbols": ["main_chain"]},
     {"name": "main$ebnf$1$subexpression$1", "symbols": ["main_chain_non_linear"]},
+    {"name": "main$ebnf$1$subexpression$1", "symbols": ["language_switch"]},
     {"name": "main$ebnf$1", "symbols": ["main$ebnf$1$subexpression$1"]},
     {"name": "main$ebnf$1$subexpression$2", "symbols": ["main_chain"]},
     {"name": "main$ebnf$1$subexpression$2", "symbols": ["main_chain_non_linear"]},
+    {"name": "main$ebnf$1$subexpression$2", "symbols": ["language_switch"]},
     {"name": "main$ebnf$1", "symbols": ["main$ebnf$1", "main$ebnf$1$subexpression$2"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "main", "symbols": ["main$ebnf$1", "NL"], "postprocess":  d => {
             d = flatAll( d );
             //console.log(d)
             d = makeFields( d );
             return { inline: d };
-        } 
+        }
         },
     {"name": "main_chain_non_linear$ebnf$1", "symbols": []},
     {"name": "main_chain_non_linear$ebnf$1$subexpression$1", "symbols": ["WS", "INLINE_CORE"]},
@@ -155,13 +157,16 @@ var grammar = {
     {"name": "main_chain$ebnf$2", "symbols": []},
     {"name": "main_chain$ebnf$2", "symbols": ["main_chain$ebnf$2", "fSep"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "main_chain", "symbols": ["main_chain$ebnf$1", "main_chain$ebnf$2", "WS"]},
+    {"name": "language_switch$ebnf$1", "symbols": ["SIGN_PRE"], "postprocess": id},
+    {"name": "language_switch$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "language_switch", "symbols": ["language_switch$ebnf$1", (lexer.has("languageSwitch") ? {type: "languageSwitch"} : languageSwitch), "WS"], "postprocess": d => flatAll( d[0] )},
     {"name": "INLINE_CORE$subexpression$1", "symbols": ["inlineComment"]},
     {"name": "INLINE_CORE$subexpression$1", "symbols": ["SEQUENCE"]},
     {"name": "INLINE_CORE", "symbols": ["INLINE_CORE$subexpression$1"]},
     {"name": "inlineComment", "symbols": [(lexer.has("inlineComment") ? {type: "inlineComment"} : inlineComment)], "postprocess":  d => {
         return { 
         _class: 'inlineComment',
-        value: d.value.replace(/\(\$ | \$\)/g, ''),
+        value: d[0].value.replace(/\(\$ | \$\)/g, ''),
         }}
         },
     {"name": "SEQUENCE$subexpression$1", "symbols": ["SEQ_SHORT"]},

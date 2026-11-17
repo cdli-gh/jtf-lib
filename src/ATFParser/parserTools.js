@@ -6,6 +6,8 @@ const RE_PARSER_SYNTAX_ERROR = /Syntax error at line (\d+) col (\d+):\n\n[ ]{2}(
 // Regex for extracting error information from Moo lexer errors
 const RE_LEXER_SYNTAX_ERROR = /invalid syntax at line (\d+) col (\d+):\n\n[ ]{2}(.+)\n.+/;
 const RE_TOKEN_DATA_ERROR = /.*Unexpected ([^ ]+) token: "([^"]+)".*/;
+// Regex for the line and column of Nearley and Moo errors in any layout
+const RE_LINE_AND_COLUMN = /(?:Syntax error|invalid syntax) at line (\d+) col (\d+)/;
 
 
 /*---/ Parser /--------------------------------------------------------------*/
@@ -99,6 +101,18 @@ const processError = function(error, p_name) {
             string: match[3],
         };
         return err_obj;
+    } else if (message && message.match(RE_LINE_AND_COLUMN)) {
+        let match = message.match(RE_LINE_AND_COLUMN);
+        let matchToken = message.match(RE_TOKEN_DATA_ERROR);
+        return {
+            agent: 'ATF ' + p_name,
+            type: 'syntax',
+            line: parseInt(match[1]),
+            column: parseInt(match[2]),
+            offset: error.offset,
+            tokenValue: (matchToken) ? matchToken[2] : null,
+            tokenClass: (matchToken) ? matchToken[1] : null,
+        };
     } else {
         return error;
     };
