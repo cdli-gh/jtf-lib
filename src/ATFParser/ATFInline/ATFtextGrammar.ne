@@ -54,17 +54,22 @@ const makeFields = ( d ) => {
 
 #===/ basic structure /=======================================================
 
-main -> (main_chain | main_chain_non_linear):+ NL
+main -> (main_chain | main_chain_non_linear | language_switch):+ NL
 {% d => {
     d = flatAll( d );
     //console.log(d)
     d = makeFields( d );
     return { inline: d };
-} 
+}
 %}
 
 main_chain_non_linear -> prtO INLINE_CORE (WS INLINE_CORE):* prtCa fSep:* WS
 main_chain -> INLINE_CORE:? fSep:* WS
+
+# Language switch (%a, %akk, %s, %e, %a/n ...) before the words of another language,
+# also after an opening bracket or logogram mark: [%a MIN], _%a mu-u2_.
+language_switch -> SIGN_PRE:? %languageSwitch WS
+{% d => flatAll( d[0] ) %}
 
 INLINE_CORE -> ( inlineComment | SEQUENCE )
 
@@ -72,7 +77,7 @@ inlineComment -> %inlineComment
 {% d => {
     return { 
     _class: 'inlineComment',
-    value: d.value.replace(/\(\$ | \$\)/g, ''),
+    value: d[0].value.replace(/\(\$ | \$\)/g, ''),
     }}
 %}
 
@@ -233,7 +238,7 @@ const add2Sign = ( chr, d ) => {
             if (el.children.includes('!')){ chr.exclamation = true };
             if (el.children.includes('?')){ chr.question = true };
         } else if (el.reference){
-            if (chr.type.includes('num')) {
+            if (chr.type && chr.type.includes('num')) {
                 chr.unit = el.reference;
                 if (chr.unit.type && !chr.unit.type.match(/sListRef|GDL/g)) {
                   chr.unit.type = 'log'

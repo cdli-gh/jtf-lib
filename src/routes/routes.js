@@ -45,7 +45,7 @@ router.post('/getSignnamesATFLINE',(req,res)=>{
 //ATF to Errors
 router.post('/getATFErrors',(req,res)=>{
 	const atf_line = req.body.atf;
-	const output = ATF2JTF(atf_line);
+	const output = ATF2JTF(atf_line, '', false, req.body.languageCodes);
 	res.send(output.errors);
 });
 
@@ -53,7 +53,7 @@ router.post('/getATFErrors',(req,res)=>{
 //ATF to JTF
 router.post('/getJTF',(req,res)=>{
 	const atf = req.body.atf;
-	const output = ATF2JTF(atf);
+	const output = ATF2JTF(atf, '', false, req.body.languageCodes);
 	res.send(output);
 });
 

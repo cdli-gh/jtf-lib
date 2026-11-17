@@ -214,6 +214,10 @@ var fieldTokens = {
 	columnSep:  /(?: |^)&(?= |$)/,
 };
 
+var languageSwitchTokens = {
+	languageSwitch: /%[a-z][a-z\d]*(?:-[a-z\d]+)*(?:\/[a-z]+)?(?= |$)/,
+};
+
 /*
 ToDo:
 - split name and index of signlists (!)
@@ -249,6 +253,7 @@ var main = {
 	...fieldTokens, //before WS
 	...signList_builtIn,
 	WS:	 / +/,
+	...languageSwitchTokens,
 	inlineComment: /\(\$.+\$\)(?= |$)/,
 	// ToDo:
 	// find a better solution
@@ -281,6 +286,7 @@ var logo = {
 	prtCa: ')a',
 	log_: {match: '_', pop: true}, // CDLI logogram-specific
 	WS: / +/,
+	...languageSwitchTokens,
 	...CVLTokens, // CDLI logogram-specific
 	...XLTokens,
 	...numElpTokens,

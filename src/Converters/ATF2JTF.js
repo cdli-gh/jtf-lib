@@ -14,6 +14,7 @@
 /* Use compiled nearly grammar */
 const { parse } = require('../ATFParser/parserTools.js');
 const ATFStructureP = require("../ATFParser/ATFStructure/ATFgrammar.js");
+const { structureParseState, resetStructureParseState, uniqueMessages } = require("../ATFParser/ATFStructure/ATFStructureParseState.js");
 const ATFTextP = require('../ATFParser/ATFInline/ATFtextGrammar.js');
 const { JTFFormatter } = require('../Formatter/JTFFormatter.js');
 
@@ -31,15 +32,45 @@ const preprocessATFString = function( string ){
 	return string+'\n␃';
 };
 
+const textLineNumbersOfParsedLines = function( string ){
+	// Line number in the text received for each line of the prepared string.
+	let textLines = string.replace(/[ ]*(\r\n|\n|\r)/gm,'\n').split('\n');
+	let textLineNumbers = [];
+	textLines.forEach( ( line, index ) => {
+		if ( line!=='' || index===0 ){
+			textLineNumbers.push( index+1 );
+		};
+	});
+	return [textLineNumbers, textLines.length];
+};
+
+const withTextLineNumbers = function( messages, textLineNumbers, textLineCount ){
+	return (messages || []).map( message => {
+		if ( Number.isInteger(message.line) && message.line>0 ){
+			let textLineNumber = textLineNumbers[message.line-1];
+			message.line = (textLineNumber) ? textLineNumber : textLineCount;
+		};
+		return message;
+	});
+};
+
 /*---/ Converters /----------------------------------------------------------*/
 
-const ATF2JTF = function( atfStr, reference='', ambigLog=false ){
+const ATF2JTF = function( atfStr, reference='', ambigLog=false, languageSwitchCodes=null ){
 	// Convert complete single ATF string to JTF.
+	let [textLineNumbers, textLineCount] = textLineNumbersOfParsedLines(atfStr);
 	// Prepare string:
 	atfStr = preprocessATFString(atfStr);
+	resetStructureParseState(languageSwitchCodes);
 	// Parse ATF to get structure:
 	var call = parse(ATFStructureP, 'structure', atfStr, reference, ambigLog);
 	//console.log('call !', call)
+	if (!call.success){
+		call.errors = [...uniqueMessages(structureParseState.errors), ...call.errors];
+	};
+	resetStructureParseState();
+	call.errors = withTextLineNumbers(call.errors, textLineNumbers, textLineCount);
+	call.warnings = withTextLineNumbers(call.warnings, textLineNumbers, textLineCount);
 	if (!call.success){
 		return call;
 	};
